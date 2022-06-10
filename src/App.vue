@@ -4,7 +4,7 @@
 
     <div class="auth-wrapper">
       <div class="auth-inner">
-        <Login />  
+        <router-view /> 
       </div>
     </div>
     <!-- <Home /> -->
@@ -17,8 +17,8 @@
 // import Nav component
   import Nav from '@/components/Nav.vue';
   // import Home from '@/components/Home.vue';
-  import Login from '@/components/Login.vue';
-import Footer from './components/Footer.vue';
+  // import Login from '@/components/Login.vue';
+  import Footer from '@/components/Footer.vue';
 
 
 // declaration
@@ -27,7 +27,7 @@ import Footer from './components/Footer.vue';
     components: {
     Nav,
     // Home,
-    Login,
+    // Login,
     Footer
 },
   };

@@ -19,7 +19,7 @@
 <style>
    footer{
     border: 1px solid black;
-    min-height: 250px;
+    min-height: 220px;
     position:absolute;
     bottom:0;
     width:100vw;

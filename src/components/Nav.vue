@@ -4,7 +4,7 @@
       <ul>
         <li><a href="default.asp">Home</a></li>
         <li><a href="about.asp">About</a></li>
-        <li style="float: right"><a href="Register.asp">Register</a></li>
+        <li style="float: right"><a href="/register">Register</a></li>
       </ul>
     </nav>
   </header>

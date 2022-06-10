@@ -1,6 +1,6 @@
 <template>
     <section>
-        <div class="home-form"></div>
+        <div class="home-form">Hello</div>
     </section>
     
 </template>
