@@ -1,33 +1,33 @@
 <template>
   <section class="register-box">
-    <form>
+    <form @submit.prevent="handleSubmit">
         <div class="register-form">
             <div class="center">
                 <h3>Register</h3>
 
                 <div class="form-group">
                     <label></label>
-                    <input type="firstname" class="form-control" placeholder="Name" required />
+                    <input type="first_name" class="form-control" v-model="first_name" placeholder="First Name" required />
                 </div>
 
                 <div class="form-group">
                     <label></label>
-                    <input type="lastname" class="form-control" placeholder="Surname" required />
+                    <input type="last_name" class="form-control" v-model="last_name" placeholder="Last Name" required />
                 </div>
 
                 <div class="form-group">
                     <label></label>
-                    <input type="email" class="form-control" placeholder="Email" required />
+                    <input type="email" class="form-control" v-model="email" placeholder="Email" required />
                 </div>
 
                 <div class="form-group">
                     <label></label>
-                    <input type="password" class="form-control" placeholder="Password" required />
+                    <input type="password" class="form-control" v-model="password" placeholder="Password" required />
                 </div>
 
                 <div class="form-group">
                     <label></label>
-                    <input type="confirmPassword" class="form-control" placeholder="Confirm password" required />
+                    <input type="password_confirm" class="form-control" v-model="password_confirm" placeholder="Confirm password" required />
                 </div>
 
                 <input type="submit" value="Register">
@@ -42,9 +42,34 @@
 </template>
 
 <script>
-export default {
-  name: "register-form",
-};
+
+    export default {
+        name: "register-form",
+
+        data() {
+            return {
+                first_name: '',
+                last_name: '',
+                email: '',
+                password: '',
+                password_confirm: ''
+            }
+        },
+        methods: {
+            handleSubmit() {
+
+                const data = {
+                    first_name: this.first_name,
+                    last_name: this.last_name,
+                    email: this.email,
+                    password: this.password,
+                    password_confirm: this.password_confirm
+                };
+                console.log(data);
+            }
+        }
+    };
+
 </script>
 
 <style>
