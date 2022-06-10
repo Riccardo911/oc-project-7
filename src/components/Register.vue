@@ -27,13 +27,13 @@
 
                 <div class="form-group">
                     <label></label>
-                    <input type="confirmPassword" class="form-control" placeholder="Confirm_password" required />
+                    <input type="confirmPassword" class="form-control" placeholder="Confirm password" required />
                 </div>
 
                 <input type="submit" value="Register">
 
                 <div class="register_link">
-                    Already a member? <a href="#">Login</a>
+                    Already a member? <a href="/Login">Login</a>
                 </div>
             </div>
         </div>

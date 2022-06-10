@@ -7,6 +7,7 @@ import Register from '@/components/Register.vue'
 Vue.use(Router)
 
 export default new Router ({
+    mode: 'history', //remove # in url
     routes: [
         {path: '/', component: Home},
         {path: '/login', component: Login},

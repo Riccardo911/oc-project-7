@@ -4,8 +4,8 @@
       <ul>
         <li><a href="default.asp">Home</a></li>
         <li><a href="about.asp">About</a></li>
-        <li style="float: right"><a href="/#/Register">Register</a></li>
-        <li style="float: right"><a href="/#/Login">Login</a></li>
+        <li style="float: right"><a href="/Register">Register</a></li>
+        <li style="float: right"><a href="/Login">Login</a></li>
       </ul>
     </nav>
   </header>
