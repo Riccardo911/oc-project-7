@@ -14,7 +14,7 @@
 </template>
 
 <script>
-// import Nav component
+// import component
   import Nav from '@/components/Nav.vue';
   // import Home from '@/components/Home.vue';
   // import Login from '@/components/Login.vue';
