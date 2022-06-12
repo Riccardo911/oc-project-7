@@ -1,18 +1,18 @@
 <template>
   <section class="login-box">
-    <form>
+    <form @submit.prevent="handleSubmit">
         <div class="login-form">
             <div class="center">
                 <h3>Login</h3>
 
                 <div class="form-group">
                     <label></label>
-                    <input type="email" class="form-control" placeholder="Email" required />
+                    <input type="email" class="form-control" v-model="email" placeholder="Email" required />
                 </div>
 
                 <div class="form-group">
                     <label></label>
-                    <input type="password" class="form-control" placeholder="Password" required />
+                    <input type="password" class="form-control" v-model="password" placeholder="Password" required />
                 </div>
 
                 <input type="submit" value="Login">
@@ -27,8 +27,29 @@
 </template>
 
 <script>
+
+import axios from 'axios';
+
 export default {
   name: "Login-form",
+  //send login credential to backend
+  data() {
+    return {
+        email : '',
+        password: ''
+    }
+  },
+  methods: {
+    async handleSubmit() {
+        const response = await axios.post('login', {
+            email: this.email,
+            password: this.password
+        })
+        console.log(response.config.data)
+        //redirect to home after login 
+        this.$router.push('home') 
+    }
+  }
 };
 </script>
 

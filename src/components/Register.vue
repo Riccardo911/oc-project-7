@@ -43,6 +43,8 @@
 
 <script>
 
+    import axios from 'axios'
+
     export default {
         name: "register-form",
 
@@ -57,18 +59,31 @@
         },
         methods: {
             handleSubmit() {
-
-                const data = {
+                
+                const dataRegister = {
                     first_name: this.first_name,
                     last_name: this.last_name,
                     email: this.email,
                     password: this.password,
                     password_confirm: this.password_confirm
                 };
-                console.log(data);
+                
+                axios.post('register', dataRegister)
+                    .then(
+                        res => {
+                            console.log(res.config.data)
+                        }
+                    ).catch(
+                        err => {
+                            console.log(err)
+                    }
+                )
+            //redirect to login after registration
+            // this.$router.push('login')    
             }
+            
         }
-    };
+    }
 
 </script>
 
