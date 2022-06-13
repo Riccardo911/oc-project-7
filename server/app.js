@@ -16,8 +16,10 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(express.json());
+
 app.use((req, res, next) => {
-    console.log('Request received')
+    console.log('Request received from http://localhost:3000' + req.url)
     next()
 })
 
