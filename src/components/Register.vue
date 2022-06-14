@@ -25,10 +25,10 @@
                     <input type="password" class="form-control" v-model="password" placeholder="Password" required />
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label></label>
                     <input type="password_confirm" class="form-control" v-model="password_confirm" placeholder="Confirm password" required />
-                </div>
+                </div> -->
 
                 <input type="submit" value="Register">
 
@@ -54,7 +54,7 @@
                 last_name: '',
                 email: '',
                 password: '',
-                password_confirm: ''
+                // password_confirm: ''
             }
         },
         methods: {
@@ -65,7 +65,7 @@
                     last_name: this.last_name,
                     email: this.email,
                     password: this.password,
-                    password_confirm: this.password_confirm
+                    // password_confirm: this.password_confirm
                 };
                 
                 axios.post('register', dataRegister)
