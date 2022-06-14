@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "password",
-    "database": "FORUM",
+    "database": "FSS",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

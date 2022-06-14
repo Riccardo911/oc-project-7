@@ -7,12 +7,12 @@
 
                 <div class="form-group">
                     <label></label>
-                    <input type="first_name" class="form-control" v-model="first_name" placeholder="First Name" required />
+                    <input type="first_name" class="form-control" v-model="firstName" placeholder="First Name" required />
                 </div>
 
                 <div class="form-group">
                     <label></label>
-                    <input type="last_name" class="form-control" v-model="last_name" placeholder="Last Name" required />
+                    <input type="last_name" class="form-control" v-model="lastName" placeholder="Last Name" required />
                 </div>
 
                 <div class="form-group">
@@ -50,8 +50,8 @@
 
         data() {
             return {
-                first_name: '',
-                last_name: '',
+                firstName: '',
+                lastName: '',
                 email: '',
                 password: '',
                 // password_confirm: ''
@@ -61,8 +61,8 @@
             handleSubmit() {
                 
                 const dataRegister = {
-                    first_name: this.first_name,
-                    last_name: this.last_name,
+                    firstName: this.firstName,
+                    lastName: this.lastName,
                     email: this.email,
                     password: this.password,
                     // password_confirm: this.password_confirm

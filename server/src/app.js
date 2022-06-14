@@ -1,10 +1,24 @@
 //modules require
 const express = require('express');
-
-
+const bodyParser = require('body-parser')
+const cors = require('cors')
+const morgan = require('morgan')
+const { sequelize, user } = require('./sequelize/models')
+// require('./routes')
 
 
 const app = express();
+app.use(morgan('combined'))
+app.use(bodyParser.json())
+app.use(cors())
+
+// sequelize.sync()
+//     .then(() => {
+//         app.listen(3001)
+//         console.log(`[sequelize sync] Server started on port 3001`)
+//     })
+
+
 
 
 // CORS defines how web servers and browsers interact, 
