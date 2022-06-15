@@ -32,7 +32,7 @@ import axios from 'axios';
 
 export default {
   name: "Login-form",
-  //send login credential to backend
+  
   data() {
     return {
         email : '',
@@ -40,14 +40,24 @@ export default {
     }
   },
   methods: {
-    async handleSubmit() {
-        const response = await axios.post('login', {
+    handleSubmit() {
+        const dataLogin = {
             email: this.email,
             password: this.password
-        })
-        console.log(response.config.data)
+        };
+
+        axios.post('login', dataLogin)
+            .then(
+                res => {
+                    console.log(res.config.data)
+                }
+            ).catch(
+                err => {
+                    console.log(err)
+            }
+        )
         //redirect to home after login 
-        this.$router.push('home') 
+        // this.$router.push('home') 
     }
   }
 };
