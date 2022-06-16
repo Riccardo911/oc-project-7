@@ -1,17 +1,173 @@
 <template>
-    <section>
-        <div class="home-form">Hello</div>
+  <article>
+     <section>
+        <div class="create-post-form">
+          <div class="profile-img"></div>
+          <div class="nav-user">
+            <button @click="newPost">Create post</button>
+            <button>New</button>
+            <!-- <button>Profile</button> -->
+          </div>
+        </div>
     </section>
-    
+    <section>
+      <div class="post">
+        <div class="post_user">
+          <div class="profile-img"></div>
+          <div class="profile-name"></div>
+        </div>
+        <div class="post_content"></div>
+        <div class="post_buttons">
+          <button>Comment</button>
+          <button>Like</button>
+          <button>Dislike</button>
+          <button id="delete-button">Delete</button>
+        </div>
+      </div>
+    </section> 
+  </article>
 </template>
 
 
 <script>
+  // import axios from 'axios';
   export default {
-    name: "Home-bar"
+    name: "Home-bar",
+  //   data() {
+  //     return {
+  //       user: null
+  //     }
+  //   },
+  //   async created() {
+  //     const response = await axios.get('home', {
+  //       headers: {
+  //         Authorization: 'Bearer ' + localStorage.getItem('token')
+  //       }
+  //     })
+  //     this.user = response.data;
+  //   }
+    methods: {
+      newPost() {
+        this.$router.push('home/create') 
+      }
+    }
   };
 </script>
 
 <style>
+
+/* section {
+  margin-top:30px;
+} */
+
+.create-post-form {
+  display: block;
+  border: 1px solid black;
+  min-height: 80px;
+  width: 80%;
+  margin:auto;
+  display:flex;
+  border-radius: 10px;
+}
+
+.profile-img {
+  border: 1px solid red;
+  height: 60px;
+  width: 60px;
+  margin-left: 10px;
+  margin-top:10px
+}
+
+.nav-user{
+  /* border: 1px solid black; */
+  min-height: 40px;
+  width: 85%;
+  margin-top:20px;
+  margin-left: 20px;
+}
+
+button {
+  margin-right: 10px;
+  width: 200px;
+  height: 40px;
+  border: 2px solid white;
+  background: green;
+  color: white;
+  border-radius: 10px;
+  font-size:18px
+}
+
+button:hover{
+  border-color: aqua;
+  transition: 0.8s;
+}
+
+.post {
+  border-radius: 10px;
+  margin:auto;
+  border: 1px solid black;
+  min-height: 220px;
+  width: 75%;
+  padding: 15px
+}
+
+.post_user {
+  border-radius: 10px;
+  margin:auto;
+  border: 1px solid black;
+  height: 60px;
+  display:flex
+}
+
+.post_user .profile-img {
+  border: 1px solid black;
+  height: 40px;
+  width: 40px;
+}
+
+.profile-name {
+  border: 1px solid black;
+  height: 20px;
+  width: 300px; /* max-width?? */
+  margin:auto;
+  margin-left:10px;
+  margin-right:10px
+}
+
+.post_content {
+  border-radius: 10px;
+  margin:auto;
+  border: 1px solid black;
+  height: 150px;
+  padding:10px
+}
+
+.post_buttons{
+  border-radius: 10px;
+  margin:auto;
+  border: 1px solid black;
+  min-height: 30px;
+  padding:10px
+}
+
+.post_buttons button {
+  margin-right: 10px;
+  width: 100px;
+  height: 40px;
+  border: 2px solid white;
+  background: green;
+  color: white;
+  border-radius: 10px;
+  font-size:14px
+}
+
+.post_buttons button:hover {
+  border-color: aqua;
+  transition: 0.8s;
+}
+
+#delete-button{
+  background: red;
+}
    
 </style>

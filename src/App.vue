@@ -1,49 +1,54 @@
 <template>
   <div id="app">
-    <Nav />
-
-    <div class="auth-wrapper">
-      <div class="auth-inner">
-        <router-view /> 
-      </div>
-    </div>
-    <!-- <Home /> -->
-    <Footer/>
-    
+    <header>
+      <Nav />
+    </header>
+    <main>
+      <router-view />
+    </main>
+    <Footer />
   </div>
 </template>
 
 <script>
 // import component
-  import Nav from '@/components/Nav.vue';
-  // import Home from '@/components/Home.vue';
-  // import Login from '@/components/Login.vue';
-  import Footer from '@/components/Footer.vue';
-
+import Nav from "@/components/Nav.vue";
+// import Home from '@/components/Home.vue';
+// import Login from '@/components/Login.vue';
+// import Footer from "@/components/Footer.vue";
 
 // declaration
-  export default {
-    name:'App',
-    components: {
+export default {
+  name: "App",
+  components: {
     Nav,
     // Home,
     // Login,
-    Footer
-},
-  };
+    // Footer,
+  },
+};
 </script>
 
 <style>
-  *{
-    padding:0;
-    margin:0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 25px;
-  }
+* {
+  padding: 0;
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 25px;
+}
 
-  body{
-    background: #FCFCFC;
-    /* height: 100vh; */
-    overflow: hidden;
-  }
+body {
+  background: #fcfcfc;
+  /* height: 100vh; */
+  /* overflow: hidden; */
+}
+
+header {
+  margin-bottom: 50px;
+}
+
+section {
+  margin-top:30px;
+}
 </style>

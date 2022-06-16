@@ -1,6 +1,6 @@
 <template>
   <section class="login-box">
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleLogin">
         <div class="login-form">
             <div class="center">
                 <h3>Login</h3>
@@ -40,24 +40,17 @@ export default {
     }
   },
   methods: {
-    handleSubmit() {
-        const dataLogin = {
+    async handleLogin() {
+        const response = await axios.post('login', {
             email: this.email,
-            password: this.password
-        };
-
-        axios.post('login', dataLogin)
-            .then(
-                res => {
-                    console.log(res.config.data)
-                }
-            ).catch(
-                err => {
-                    console.log(err)
-            }
-        )
-        //redirect to home after login 
-        // this.$router.push('home') 
+            password: this.password,
+        });
+        console.log(response)
+        localStorage.setItem('token', response.data.token);
+        //redirect to home after login
+        if (response.status == 200 ) {
+            this.$router.push('home')     
+        }
     }
   }
 };

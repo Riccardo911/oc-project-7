@@ -1,13 +1,11 @@
 <template>
-  <header>
     <nav class="nbar">
       <ul>
-        <li><a href="/home">Home</a></li>
-        <li style="float: right"><a href="/Register">Register</a></li>
-        <li style="float: right"><a href="/Login">Login</a></li>
+        <li><router-link to="/home">Home</router-link></li>
+        <li style="float: right"><router-link to="/Register">Register</router-link></li>
+        <li style="float: right"><router-link to="/Login">Login</router-link></li>
       </ul>
     </nav>
-  </header>
 </template>
 
 <script>
@@ -18,8 +16,8 @@
 
 <style>
 
-nav {
-  position: absolute;
+.nbar{
+  height: 60px;
 }
 
 ul {

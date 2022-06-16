@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 const { Sequelize } = require("sequelize")
+const { sequelize } = require("./sequelize/models")
 
 const userRoutes = require('./sequelize/routes/user')
 const { User } = require('./sequelize/models/index')
@@ -13,9 +14,13 @@ const fs = require('fs');
 
 const app = express();
 app.use(morgan('combined'))
-app.use(bodyParser.json())
 app.use(cors())
 
+async function main() {
+    await sequelize.sync({ alter:true })
+    console.log('Database synced!')
+}
+main()
 
 // CORS defines how web servers and browsers interact, 
 // specifying which resources can be legitimately requested 
@@ -31,10 +36,12 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-
+app.use(bodyParser.json())
 
 app.use('/register', userRoutes)
+// app.use('/login', userRoutes)
 
+//login
 app.post('/login', (req, res, next) => {
     User.findOne({ where: {email: req.body.email} }).then((user) => {
         if(!user) {
@@ -46,12 +53,11 @@ app.post('/login', (req, res, next) => {
             };
             res.status(200).json({
                 userID: user.user_id,
-                token: jwt.sign({userID: user.user_id}, 'token', {expiresIn: '24h'})
+                token: jwt.sign({userID: user.user_id}, 'secret_token_dev', {expiresIn: '24h'})
             })
         }).catch(error => res.status(400).json(error));
-    }).catch(error => res.status(500).json({error}))
-})
-
+    }).catch(error => res.status(500).json({error}));
+});
 
 
 // app.post('/login', (req, res, next) => {

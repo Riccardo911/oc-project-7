@@ -65,30 +65,30 @@ User.sync().then(() => {
     insert into table
 ***********************/
 
-User.sync().then(() => {
-    return User.create({
-        firstName: 'test',
-        lastName: 'test',
-        email:'test@example.com',
-        password: 'passaworld'
-    })
-}).then((data) => {
-    console.log("User added to database!");
-    console.log(data.toJSON())
-}).catch((err) => {
-    console.log(err)
-});
+// User.sync().then(() => {
+//     return User.create({
+//         firstName: 'test',
+//         lastName: 'test',
+//         email:'test@example.com',
+//         password: 'passaworld'
+//     })
+// }).then((data) => {
+//     console.log("User added to database!");
+//     console.log(data.toJSON())
+// }).catch((err) => {
+//     console.log(err)
+// });
 
-/************************ 
-  model queryng
-**********************/
+// /************************ 
+//   model queryng
+// **********************/
 
-User.sync().then(() => {
-    return User.findAll( );
-}).then((data) => {
-    data.forEach((element) => {
-        console.log(element.toJSON())
-    })
-}).catch((err) => {
-    console.log(err)
-})
+// User.sync().then(() => {
+//     return User.findAll( );
+// }).then((data) => {
+//     data.forEach((element) => {
+//         console.log(element.toJSON())
+//     })
+// }).catch((err) => {
+//     console.log(err)
+// })

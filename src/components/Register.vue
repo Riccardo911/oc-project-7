@@ -53,33 +53,42 @@
                 firstName: '',
                 lastName: '',
                 email: '',
-                password: '',
+                password: ''
                 // password_confirm: ''
             }
         },
         methods: {
-            handleSubmit() {
-                
-                const dataRegister = {
+            async handleSubmit() {
+                const response = await axios.post('register', {
                     firstName: this.firstName,
                     lastName: this.lastName,
                     email: this.email,
                     password: this.password,
                     // password_confirm: this.password_confirm
-                };
+                });
+                console.log(response)
+                // const dataRegister = {
+                //     firstName: this.firstName,
+                //     lastName: this.lastName,
+                //     email: this.email,
+                //     password: this.password,
+                //     // password_confirm: this.password_confirm
+                // };
                 
-                axios.post('register', dataRegister)
-                    .then(
-                        res => {
-                            console.log(res.config.data)
-                        }
-                    ).catch(
-                        err => {
-                            console.log(err)
-                    }
-                )
+                // axios.post('register', dataRegister)
+                //     .then(
+                //         res => {
+                //             console.log(res.config.data)
+                //         }
+                //     ).catch(
+                //         err => {
+                //             console.log(err)
+                //     }
+                // )
             //redirect to login after registration
-            // this.$router.push('login')    
+                if (response.status == 201 ) {
+                   this.$router.push('login')     
+                }
             }
             
         }
