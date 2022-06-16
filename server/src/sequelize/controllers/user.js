@@ -23,8 +23,8 @@ exports.register = (req, res, next) => {
     })
 }
 
-// exports.login = (req, res, next) => {
-//     User.findOne({ where: {email: req.body.email} }).then((user) => {
+// exports.login = async (req, res, next) => {
+//     await User.findOne({ where: {email: req.body.email} }).then((user) => {
 //         if(!user) {
 //             return res.status(401).json({ error: "User doesn't exist!"});
 //         };

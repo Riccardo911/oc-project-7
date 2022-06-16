@@ -7,9 +7,9 @@
       </div> -->
       <div class="post_content">
         <form @submit.prevent="handleSubmit">
-          <textarea type="text" name="post" col="5" placeholder="Write some text..." required></textarea>
+          <textarea type="text" name="text" col="5" placeholder="Write some text..." required v-model="postText"></textarea>
           <input id="reset" type="reset" value="Reset">
-          <input type="submit" value="post">
+          <input type="submit" value="Create">
         </form>
       </div>
       <div class="post_buttons">
@@ -27,13 +27,13 @@
     name: "create-post",
     data() {
       return {
-        post: ''
+        postText: '',
       }
     },
     methods: {
-      handleSubmit() {
-        const response = axios.post('home/create', {
-          post: this.post
+      async handleSubmit() {
+        const response = await axios.post('home/create', {
+          postText: this.postText,
         })
         console.log(response)
       }

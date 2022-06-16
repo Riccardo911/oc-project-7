@@ -3,11 +3,13 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
+require('express-async-errors');
 const { Sequelize } = require("sequelize")
 const { sequelize } = require("./sequelize/models")
 
 const userRoutes = require('./sequelize/routes/user')
 const { User } = require('./sequelize/models/index')
+const { Post } = require('./sequelize/models/index')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
@@ -42,8 +44,8 @@ app.use('/register', userRoutes)
 // app.use('/login', userRoutes)
 
 //login
-app.post('/login', (req, res, next) => {
-    User.findOne({ where: {email: req.body.email} }).then((user) => {
+app.post('/login', async (req, res, next) => {
+    await User.findOne({ where: {email: req.body.email} }).then((user) => {
         if(!user) {
             return res.status(401).json({ error: "User doesn't exist!"});
         };
@@ -59,6 +61,21 @@ app.post('/login', (req, res, next) => {
     }).catch(error => res.status(500).json({error}));
 });
 
+//post
+app.post('/home/create', (req, res) => {
+    const post = new Post ({
+        postText: req.body.postText
+    })
+    post.save().then(() => {
+        res.status(201).json({
+            message: 'Post created successfully!'
+        })
+    }).catch((error) => {
+        res.status(400).json({
+            error: error
+        })
+    })
+})
 
 // app.post('/login', (req, res, next) => {
 //     User.findOne({ where: {email: req.body.email} }).then((user) => {
@@ -71,13 +88,14 @@ app.post('/login', (req, res, next) => {
 // })
 
 
-
-// app.post('/login', (req, res) => {
+//test
+// app.post('/home/create', (req, res) => {
 //     console.log(req.body);
 //     res.status(200).json({
-//     message: 'User Logged successfully!'
+//     message: 'Post create successfully!'
 //   });
 // })
+
 
 
 // app.use((req, res, next) => {

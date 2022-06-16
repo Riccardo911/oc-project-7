@@ -19,22 +19,22 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull:false
     },
-    text: {
+    postText: {
         type: DataTypes.STRING,
         allowNull:false
     },
-    imageURL: {
-        type: DataTypes.STRING,
-        allowNull:false
-    },
-    likes: {
-        type: DataTypes.STRING,
-        allowNull:false
-    },
-    comment: {
-        type: DataTypes.STRING,
-        allowNull:false
-    }
+    // imageURL: {
+    //     type: DataTypes.STRING,
+    //     allowNull:false
+    // },
+    // likes: {
+    //     type: DataTypes.STRING,
+    //     allowNull:false
+    // },
+    // comment: {
+    //     type: DataTypes.STRING,
+    //     allowNull:false
+    // }
   },{
     sequelize,
     tableName: 'posts',
