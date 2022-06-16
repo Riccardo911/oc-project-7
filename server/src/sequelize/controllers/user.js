@@ -1,3 +1,7 @@
+/******************************************************* 
+                User controllers
+******************************************************/
+
 const { User } = require('../models/index')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
@@ -26,7 +30,7 @@ exports.register = (req, res, next) => {
     }).catch ((error) => {res.status(400).json({error: error})});
 }
 
-
+//login
 exports.login = async (req, res, next) => {
     await User.findOne({ where: {email: req.body.email} }).then((user) => {
         if(!user) {

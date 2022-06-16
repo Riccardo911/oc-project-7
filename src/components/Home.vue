@@ -31,21 +31,17 @@
 
 <script>
   // import axios from 'axios';
+
   export default {
     name: "Home-bar",
-  //   data() {
-  //     return {
-  //       user: null
-  //     }
-  //   },
-  //   async created() {
-  //     const response = await axios.get('home', {
-  //       headers: {
-  //         Authorization: 'Bearer ' + localStorage.getItem('token')
-  //       }
-  //     })
-  //     this.user = response.data;
-  //   }
+    // async created() {
+    //   const response = await axios.get('user', {
+    //     headers: {
+    //       Authorization: 'Bearer ' + localStorage.getItem('token')
+    //     }
+    //   });
+    //   console.log(response)
+    // },
     methods: {
       newPost() {
         this.$router.push('home/create') 

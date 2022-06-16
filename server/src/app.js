@@ -8,11 +8,8 @@ const { Sequelize } = require("sequelize")
 const { sequelize } = require("./sequelize/models")
 
 const userRoutes = require('./sequelize/routes/user')
-const { User } = require('./sequelize/models/index')
 const { Post } = require('./sequelize/models/index')
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const fs = require('fs');
+
 
 const app = express();
 app.use(morgan('combined'))
@@ -24,12 +21,7 @@ async function main() {
 }
 main()
 
-// CORS defines how web servers and browsers interact, 
-// specifying which resources can be legitimately requested 
-// — by default, AJAX requests are forbidden.
-//  -----
-//To allow cross-origin requests (and prevent CORS errors), 
-//specific access control headers must be set on your server response object.
+//CORS
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -40,41 +32,23 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(bodyParser.json())
 
-app.use('/auth', userRoutes)
+//user
+app.use('/api/auth', userRoutes)
 
-//login
-// app.post('/login', async (req, res, next) => {
-//     await User.findOne({ where: {email: req.body.email} }).then((user) => {
-//         if(!user) {
-//             return res.status(401).json({ error: "User doesn't exist!"});
-//         };
-//         bcrypt.compare(req.body.password, user.password).then((valid) => {
-//             if (!valid) {
-//                 return res.status(401).json({ error: 'Incorrect password!'});
-//             };
-//             res.status(200).json({
-//                 userID: user.user_id,
-//                 token: jwt.sign({userID: user.user_id}, 'secret_token_dev', {expiresIn: '24h'})
-//             })
-//         }).catch(error => res.status(400).json(error));
-//     }).catch(error => res.status(500).json({error}));
-// });
 
 //post
-app.post('/home/create', (req, res) => {
+app.post('/post/create', (req, res) => {
     const post = new Post ({
-        postText: req.body.postText
+        postText: req.body.postText,
     })
     post.save().then(() => {
         res.status(201).json({
             message: 'Post created successfully!'
         })
-    }).catch((error) => {
-        res.status(400).json({
-            error: error
-        })
+    }).catch((error) => {res.status(400).json({error: error})
     })
 })
+
 
 // app.post('/login', (req, res, next) => {
 //     User.findOne({ where: {email: req.body.email} }).then((user) => {

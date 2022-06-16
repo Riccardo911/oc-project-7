@@ -32,7 +32,7 @@
     },
     methods: {
       async handleSubmit() {
-        const response = await axios.post('home/create', {
+        const response = await axios.post('post/create', {
           postText: this.postText,
         })
         console.log(response)
