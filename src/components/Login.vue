@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     async handleLogin() {
-        const response = await axios.post('login', {
+        const response = await axios.post('auth/login', {
             email: this.email,
             password: this.password,
         });

@@ -40,26 +40,25 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(bodyParser.json())
 
-app.use('/register', userRoutes)
-// app.use('/login', userRoutes)
+app.use('/auth', userRoutes)
 
 //login
-app.post('/login', async (req, res, next) => {
-    await User.findOne({ where: {email: req.body.email} }).then((user) => {
-        if(!user) {
-            return res.status(401).json({ error: "User doesn't exist!"});
-        };
-        bcrypt.compare(req.body.password, user.password).then((valid) => {
-            if (!valid) {
-                return res.status(401).json({ error: 'Incorrect password!'});
-            };
-            res.status(200).json({
-                userID: user.user_id,
-                token: jwt.sign({userID: user.user_id}, 'secret_token_dev', {expiresIn: '24h'})
-            })
-        }).catch(error => res.status(400).json(error));
-    }).catch(error => res.status(500).json({error}));
-});
+// app.post('/login', async (req, res, next) => {
+//     await User.findOne({ where: {email: req.body.email} }).then((user) => {
+//         if(!user) {
+//             return res.status(401).json({ error: "User doesn't exist!"});
+//         };
+//         bcrypt.compare(req.body.password, user.password).then((valid) => {
+//             if (!valid) {
+//                 return res.status(401).json({ error: 'Incorrect password!'});
+//             };
+//             res.status(200).json({
+//                 userID: user.user_id,
+//                 token: jwt.sign({userID: user.user_id}, 'secret_token_dev', {expiresIn: '24h'})
+//             })
+//         }).catch(error => res.status(400).json(error));
+//     }).catch(error => res.status(500).json({error}));
+// });
 
 //post
 app.post('/home/create', (req, res) => {
