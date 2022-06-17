@@ -47,6 +47,9 @@ export default {
         });
         console.log(response)
         localStorage.setItem('token', response.data.token);
+
+        // this.$store.dispatch('setToken', response.data.token)
+        // this.$store.dispatch('setUser', response.data.user)
         //redirect to home after login
         if (response.status == 200 ) {
             this.$router.push('home')     

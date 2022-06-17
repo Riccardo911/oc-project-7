@@ -1,4 +1,5 @@
 //modules require
+const chalk = require('chalk')
 const express = require('express');
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -15,11 +16,19 @@ const app = express();
 app.use(morgan('combined'))
 app.use(cors())
 
+//sync with SQL database
 async function main() {
     await sequelize.sync({ alter:true })
-    console.log('Database synced!')
+    console.log(chalk.bgGreen('Database synced!'))
 }
 main()
+
+//test connection
+sequelize.authenticate().then(() => {
+    console.log(chalk.bgGreen('[sequelize] Connection has been established successfully.'));
+}).catch ((error) => {
+    console.error(chalk.bgRed('[sequelize] Unable to connect to the database:', error));
+});
 
 //CORS
 app.use((req, res, next) => {
@@ -32,7 +41,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(bodyParser.json())
 
-//user
+//user login and register
 app.use('/api/auth', userRoutes)
 
 

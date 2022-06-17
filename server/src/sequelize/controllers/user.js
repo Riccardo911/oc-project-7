@@ -7,8 +7,8 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 //register
-exports.register = (req, res, next) => {
-    User.findOne({ where: { email: req.body.email } }).then((user) => {
+exports.register = async (req, res, next) => {
+    await User.findOne({ where: { email: req.body.email } }).then((user) => {
         if (user) {
             return res.status(401).json({ error: "User already exist!" });
         }
