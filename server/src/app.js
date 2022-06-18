@@ -9,7 +9,10 @@ const { Sequelize } = require("sequelize")
 const { sequelize } = require("./sequelize/models")
 
 const userRoutes = require('./sequelize/routes/user')
-const { Post } = require('./sequelize/models/index')
+const postRoutes = require('./sequelize/routes/post')
+const { Post } = require('./sequelize/models/index');
+const { User } = require('./sequelize/models/index')
+const user = require('./sequelize/models/user');
 
 
 const app = express();
@@ -42,33 +45,43 @@ app.use(express.json());
 app.use(bodyParser.json())
 
 //user login and register
-app.use('/api/auth', userRoutes)
+app.use('/api/user', userRoutes)
+
+//post
+app.use('/post', postRoutes)
+
+
+
+
+
 
 
 //post
-app.post('/post/create', (req, res) => {
-    const post = new Post ({
-        postText: req.body.postText,
-    })
-    post.save().then(() => {
-        res.status(201).json({
-            message: 'Post created successfully!'
-        })
-    }).catch((error) => {res.status(400).json({error: error})
-    })
-})
-
-
-// app.post('/login', (req, res, next) => {
-//     User.findOne({ where: {email: req.body.email} }).then((user) => {
-//         if(user) {
-//             res.status(200).json({
-//                 email: user.firstName
-//             })
-//         }
-//     }).catch(error => res.status(400).json(error))
+// app.post('/post/create', (req, res) => {
+//     const post = new Post ({
+//         postText: req.body.postText,
+//     })
+//     post.save().then(() => {
+//         res.status(201).json({
+//             message: 'Post created successfully!'
+//         })
+//     }).catch((error) => {res.status(400).json({error: error})
+//     })
 // })
 
+// app.post('/post/create', async (req,res) => {
+//     const { userID , postText } = req.body
+
+//     try {
+//         const user = await User.findOne({ where: { user_id : userID }})
+
+//         const post = await Post.create({ postText, userId: user.user_id})
+//         return res.json(post)
+//     } catch (err) {
+//         console.log(err)
+//         return res.status(500).json(err)
+//     }
+// })
 
 //test
 // app.post('/home/create', (req, res) => {
@@ -76,30 +89,6 @@ app.post('/post/create', (req, res) => {
 //     res.status(200).json({
 //     message: 'Post create successfully!'
 //   });
-// })
-
-
-
-// app.use((req, res, next) => {
-//     console.log('Request received from http://localhost:3000' + req.url)
-//     next()
-// })
-
-// app.use((req, res, next) => {
-//     res.status(200)
-//     next()
-// })
-
-// app.use((req, res, next) => {
-//     res.json({
-//         message: 'Your request was sucessful',
-//     })
-//     next()
-// })
-
-
-// app.use((req, res, next) => {
-//     console.log('Response sent successfully!')
 // })
 
 module.exports = app;
