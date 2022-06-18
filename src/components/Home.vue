@@ -1,22 +1,22 @@
 <template>
   <article>
-     <section>
+     <section >
         <div class="create-post-form">
           <div class="profile-img"></div>
           <div class="nav-user">
             <button @click="newPost">Create post</button>
-            <button>New</button>
+            <button>Unread</button>
             <!-- <button>Profile</button> -->
           </div>
         </div>
     </section>
-    <section>
+    <section v-for="(post, index) in allPosts" v-bind:key="index">
       <div class="post">
         <div class="post_user">
           <div class="profile-img"></div>
-          <div class="profile-name"></div>
+          <div class="profile-name">{{post.userId}}</div>
         </div>
-        <div class="post_content"></div>
+        <div class="post_content">{{post.postText}}</div>
         <div class="post_buttons">
           <button>Comment</button>
           <button>Like</button>
@@ -30,22 +30,38 @@
 
 
 <script>
-  // import axios from 'axios';
+  import axios from 'axios';
 
   export default {
     name: "Home-bar",
-    // async created() {
-    //   const response = await axios.get('user', {
+
+    data(){
+      return{
+        allPosts:[]
+      }
+    },
+
+    // async showPost() {
+    //   const response = await axios.get('/post/all', {
     //     headers: {
     //       Authorization: 'Bearer ' + localStorage.getItem('token')
     //     }
-    //   });
+    //   })
     //   console.log(response)
     // },
+
     methods: {
       newPost() {
         this.$router.push('home/create') 
       }
+    },
+    mounted() {
+      //get all post from the DB and show posts in user home page
+      axios.get('/post/all').then(response => {
+        let posts = response.data;
+        this.allPosts = posts
+        // console.log(response.data)
+      }).catch(error => { console.log(error)})
     }
   };
 </script>

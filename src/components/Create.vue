@@ -28,12 +28,14 @@
     data() {
       return {
         postText: '',
+        //userId
       }
     },
     methods: {
       async handleSubmit() {
-        const response = await axios.post('post/create', {
+        const response = await axios.post('/post/create', {
           postText: this.postText,
+          //userId from LocalStorage
         })
         console.log(response)
       }
