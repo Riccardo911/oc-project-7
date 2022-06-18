@@ -3,11 +3,16 @@
     contains all of our post related business logic
  *************************************************/
 
-    const express = require('express')
-    const router = express.Router()
+const express = require('express')
+const router = express.Router()
     
-    const postCtrl = require('../controllers/post')
+const postCtrl = require('../controllers/post')
 
-    router.post('/create' , postCtrl.createPost)
+//GET
+router.get('/all' , postCtrl.getAllPosts)
+router.get('/all/:id' , postCtrl.getPostsByUser)
 
-    module.exports = router;
+//POST
+router.post('/create' , postCtrl.createPost)
+
+module.exports = router;
