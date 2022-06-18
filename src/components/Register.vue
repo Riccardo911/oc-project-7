@@ -59,7 +59,7 @@
         },
         methods: {
             async handleSubmit() {
-                const response = await axios.post('/api/auth/register', {
+                const response = await axios.post('/api/user/register', {
                     firstName: this.firstName,
                     lastName: this.lastName,
                     email: this.email,
@@ -67,27 +67,12 @@
                     // password_confirm: this.password_confirm
                 });
                 console.log(response)
-                // const dataRegister = {
-                //     firstName: this.firstName,
-                //     lastName: this.lastName,
-                //     email: this.email,
-                //     password: this.password,
-                //     // password_confirm: this.password_confirm
-                // };
                 
-                // axios.post('register', dataRegister)
-                //     .then(
-                //         res => {
-                //             console.log(res.config.data)
-                //         }
-                //     ).catch(
-                //         err => {
-                //             console.log(err)
-                //     }
-                // )
             //redirect to login after registration
                 if (response.status == 201 ) {
                    this.$router.push('login')     
+                } else {
+                    //show error message on frontend
                 }
             }
             
