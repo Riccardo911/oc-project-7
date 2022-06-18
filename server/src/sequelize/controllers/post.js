@@ -23,6 +23,7 @@ exports.createPost = async (req, res) => {
 //get all post - view in the home page all posts
 
 exports.getAllPosts = async (req, res) => {
+
     try {
         const posts = await Post.findAll() //search all posts in the DB
         return res.json(posts)
@@ -30,6 +31,7 @@ exports.getAllPosts = async (req, res) => {
         console.log(err)
         return res.status(500).json(err)
     }
+    
 }
 
 //Get posts by author
@@ -46,3 +48,9 @@ exports.getPostsByUser = async (req, res) => {
         return res.status(500).json(err)
     }
 }
+
+//delete a post
+
+// exports.deletePost = async (req, res) => {
+
+// }

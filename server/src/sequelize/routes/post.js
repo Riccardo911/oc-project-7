@@ -10,14 +10,26 @@ const auth = require('../middlewares/auth')
     
 const postCtrl = require('../controllers/post')
 
-//GET
-router.get('/all' , auth , postCtrl.getAllPosts)
-router.get('/all/:id', auth , postCtrl.getPostsByUser)
+try {
 
-//POST
-router.post('/create' , auth , postCtrl.createPost)
+    //GET
+    router.get('/all' , auth , postCtrl.getAllPosts)
+    router.get('/all/:id', auth , postCtrl.getPostsByUser)
 
-//DELETE
-// router.delete('all/:id', postCtrl.deletePost)
+    //POST
+    router.post('/create/', auth, postCtrl.createPost)
+
+    //DELETE
+    // router.delete('all/:id', postCtrl.deletePost)  
+
+} catch (error){
+    console.log(error)
+}
+
+
+
+
+
+
 
 module.exports = router;

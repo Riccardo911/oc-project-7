@@ -25,6 +25,6 @@ module.exports = (req, res, next) => {
     }
     // Otherwise, we return the status 401 - Unauthorized
     else {
-        res.status(401).json({error:"Unauthorized! "});
+        res.status(401).json({error:"Unauthorized!"});
     }
 };
