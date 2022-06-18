@@ -57,10 +57,13 @@
     },
     mounted() {
       //get all post from the DB and show posts in user home page
-      axios.get('/post/all').then(response => {
+      axios.get('/post/all', {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
         let posts = response.data;
         this.allPosts = posts
-        // console.log(response.data)
       }).catch(error => { console.log(error)})
     }
   };

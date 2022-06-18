@@ -1,30 +1,30 @@
-/*
-    check incoming requests for a token,
-    it will then validate that token,
-    it will also decode it 
-    and check that the userId encoded within it is the same 
-    as any userId within the body of the request
-
-    if everything is fine, the user is authenticated
-    and the request will be passed along
-    otherwise it will refuse access to those particular endpoints
-*/
+/******************************************************************* 
+    Authorization middleware - JSON web token - https://jwt.io/ 
+********************************************************************/
 
 const jwt = require('jsonwebtoken')
-const env =require('dotenv').config()
+
 
 module.exports = (req, res, next) => {
-  try {
-    const token = req.headers.authorization.split(' ')[1]
-    const decodedToken = jwt.verify(token, 'secret_token_dev') //check the validity of a token
-    const userId = decodedToken.userId;
-    req.auth = { userId }
-    if (req.body.userId && req.body.userId !== userId) {
-      throw 'Invalid user ID'
-    } else {
-      next()
+    // Token in header request
+    const authHeader = req.headers.authorization;
+
+//  If the user has permission,
+//  we declare the token and we check it, 
+//  if there is not error --> next() 
+//  otherwise we return a 403 status
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+
+        jwt.verify(token, 'secret_token_dev', (err, user) => {
+            if (err) {
+                return res.status(403);
+            }
+            next();
+        });
     }
-  } catch (error) {
-    res.status(401).json({ error: error | 'Request not authenticated' })
-  }
-}
+    // Otherwise, we return the status 401 - Unauthorized
+    else {
+        res.status(401).json({error:"Unauthorized! "});
+    }
+};
