@@ -7,17 +7,14 @@ const { User , Post } = require('../models/index')
 
 //create post
 exports.createPost = async (req, res) => {
-    const { userID , postText } = req.body
+    //data from Create component
+    let postText = req.body.postText
+    let userId = req.body.userId
+    let insert = {postText, userId}
 
-    try {
-        const user = await User.findOne({ where: { user_id : userID }}) //search the id of the user that create the post
-
-        const post = await Post.create({ postText, userId: user.user_id}) //create a row in the database ( postText, ForeignKey = user_id)
-        return res.json(post)
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json(err)
-    }
+    await Post.create(insert).then((response) => {
+        res.status(201).json(JSON.stringify(response))
+    })
 }
 
 //get all post - view in the home page all posts

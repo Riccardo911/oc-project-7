@@ -59,21 +59,29 @@
         },
         methods: {
             async handleSubmit() {
-                const response = await axios.post('/api/user/register', {
+                console.log('hello')
+                try{
+                    await axios.post('/api/user/register', {
                     firstName: this.firstName,
                     lastName: this.lastName,
                     email: this.email,
                     password: this.password,
                     // password_confirm: this.password_confirm
-                });
-                console.log(response)
+                })   
+                } catch (err) {
+                    console.log(err.response.data.error)
+                }
+               
+                
                 
             //redirect to login after registration
-                if (response.status == 201 ) {
-                   this.$router.push('login')     
-                } else {
-                    //show error message on frontend
-                }
+                // if (response.status == 201 ) {
+                //    this.$router.push('login')     
+                // }
+                // if (response.status == 401 ) {
+                //     alert('User already axist')
+                // }
+
             }
             
         }

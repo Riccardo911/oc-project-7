@@ -47,6 +47,10 @@ export default {
         });
         console.log(response)
         localStorage.setItem('token', response.data.token);
+        //user logged info stored
+        localStorage.setItem('userId', response.data.userID);
+        localStorage.setItem('firstName', response.data.firstName);
+        localStorage.setItem('lastName', response.data.lastName);
 
         //redirect to home after login
         if (response.status == 200 ) {

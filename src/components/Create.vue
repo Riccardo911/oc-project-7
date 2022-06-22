@@ -6,8 +6,8 @@
         <div class="profile-name"></div>
       </div> -->
       <div class="post_content">
-        <form @submit.prevent="handleSubmit">
-          <textarea type="text" name="text" col="5" placeholder="Write some text..." required v-model="postText"></textarea>
+        <form @submit.prevent="createPost">
+          <textarea type="text" name="text" col="5" placeholder="Write some text..." required v-model="post.postText"></textarea>
           <input id="reset" type="reset" value="Reset">
           <input type="submit" value="Create">
         </form>
@@ -27,20 +27,30 @@
     name: "create-post",
     data() {
       return {
-        postText: '',
-        //userId
+        post:{
+          postText:'',
+          userId: localStorage.userId
+        },
+        postSting:''
       }
     },
     methods: {
-      async handleSubmit() {
-        const response = await axios.post('/post/create', {
-          postText: this.postText,
-          //userId from LocalStorage
+      async createPost() {
+        this.postSting = JSON.stringify(this.post);
+        await axios.post('post/create', this.postSting, {
+          headers : {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        }).then(response => {
+          let post = JSON.parse(response.data)
+          console.log(post)
+        }).catch(error => {
+          console.log(error)
         })
-        console.log(response)
       }
     }
-  };
+  }
 </script>
 
 <style>
