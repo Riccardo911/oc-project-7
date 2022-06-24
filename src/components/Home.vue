@@ -22,8 +22,9 @@
           <button>Comment</button>
           <button>Like</button>
           <button>Dislike</button>
+          <button>Modify</button>
           <button 
-          v-if="post.userId == userLogged.id" 
+          v-if="post.userId == user" 
           id="delete-button" 
           @click="deletePost(post.post_id)">
           Delete</button>
@@ -43,21 +44,21 @@
     data(){
       return {
         allPosts:[],
-        userLogged: {
-          id:'',
-          firstName:'',
-          lastName:''
-        },
+        user: null
       }
     },
 
     methods: {
+
       newPost() {
         this.$router.push('home/create') 
       },
 
       async deletePost(postId){
         const url = `/post/all/${postId}`
+
+        //  TODO  : alert 'You want to delete the post?'
+        //        if true -->   DELETE REQUEST
         
         await axios.delete( url, { 
           headers : 
@@ -68,6 +69,8 @@
             window.location.assign('/home');
           }).catch((error) => console.log(error.message))
       },
+
+      // async updatePost()
 
     },
 
@@ -83,7 +86,7 @@
       }).catch(error => { console.log(error)});
       
       // user logged
-      this.userLogged.id = localStorage.getItem('userId');
+      this.user = localStorage.getItem('userId');
     }
   };
 </script>

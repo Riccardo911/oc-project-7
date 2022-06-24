@@ -18,7 +18,7 @@
                 <input type="submit" value="Login">
 
                 <div class="register_link">
-                    Not a member? <a href="/Register">Register</a>
+                    Not a member? <router-link to="/Register">Register</router-link>
                 </div>
             </div>
         </div>

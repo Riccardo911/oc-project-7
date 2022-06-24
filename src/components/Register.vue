@@ -33,7 +33,7 @@
                 <input type="submit" value="Register">
 
                 <div class="register_link">
-                    Already a member? <a href="/Login">Login</a>
+                    Already a member? <router-link to="/Login">Login</router-link>
                 </div>
             </div>
         </div>
