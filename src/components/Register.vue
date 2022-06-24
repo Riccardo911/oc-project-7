@@ -59,7 +59,6 @@
         },
         methods: {
             async handleSubmit() {
-                console.log('hello')
                 try{
                     await axios.post('/api/user/register', {
                     firstName: this.firstName,

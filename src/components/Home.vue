@@ -6,7 +6,7 @@
           <div class="nav-user">
             <button @click="newPost">Create post</button>
             <button>Unread</button>
-            <!-- <button>Profile</button> -->
+            <button>My posts</button>
           </div>
         </div>
     </section>
@@ -14,14 +14,19 @@
       <div class="post">
         <div class="post_user">
           <div class="profile-img"></div>
-          <div class="profile-name">{{post.userId}}</div>
+          <div class="profile-name">posted by {{ post.userId }}</div>
+          <div class="profile-name">written at {{ post.createdAt }}</div>
         </div>
         <div class="post_content">{{post.postText}}</div>
         <div class="post_buttons">
           <button>Comment</button>
           <button>Like</button>
           <button>Dislike</button>
-          <button id="delete-button">Delete</button>
+          <button 
+          v-if="post.userId == userLogged.id" 
+          id="delete-button" 
+          @click="deletePost(post.post_id)">
+          Delete</button>
         </div>
       </div>
     </section> 
@@ -36,27 +41,38 @@
     name: "Home-bar",
 
     data(){
-      return{
-        allPosts:[]
+      return {
+        allPosts:[],
+        userLogged: {
+          id:'',
+          firstName:'',
+          lastName:''
+        },
       }
     },
-
-    // async showPost() {
-    //   const response = await axios.get('/post/all', {
-    //     headers: {
-    //       Authorization: 'Bearer ' + localStorage.getItem('token')
-    //     }
-    //   })
-    //   console.log(response)
-    // },
 
     methods: {
       newPost() {
         this.$router.push('home/create') 
-      }
+      },
+
+      async deletePost(postId){
+        const url = `/post/all/${postId}`
+        
+        await axios.delete( url, { 
+          headers : 
+            { Authorization: 'Bearer ' + localStorage.getItem('token')}
+          }).then((response) => {
+            let res = JSON.parse(response.data)
+            console.log(res)
+            window.location.assign('/home');
+          }).catch((error) => console.log(error.message))
+      },
+
     },
+
     mounted() {
-      //get all post from the DB and show posts in user home page
+      //get all post from the DB --> if authorized show posts in user home page
       axios.get('/post/all', {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -64,7 +80,10 @@
       }).then(response => {
         let posts = response.data;
         this.allPosts = posts
-      }).catch(error => { console.log(error)})
+      }).catch(error => { console.log(error)});
+      
+      // user logged
+      this.userLogged.id = localStorage.getItem('userId');
     }
   };
 </script>
@@ -158,6 +177,8 @@ button:hover{
 }
 
 .post_buttons{
+  display:flex;
+  justify-content: center;
   border-radius: 10px;
   margin:auto;
   border: 1px solid black;

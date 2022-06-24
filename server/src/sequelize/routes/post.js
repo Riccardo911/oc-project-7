@@ -14,15 +14,15 @@ try {
 
     //GET
     router.get('/all' , auth , postCtrl.getAllPosts)
-    router.get('/all/:id', auth , postCtrl.getPostsByUser)
+    // router.get('/all/:id', auth , postCtrl.getPostsByUser)
 
     //POST
     router.post('/create/', auth, postCtrl.createPost)
 
     //DELETE
-    // router.delete('all/:id', postCtrl.deletePost)  
+    router.delete('/all/:id', auth, postCtrl.deletePost)
 
-} catch (error){
+} catch (error) {
     console.log(error)
 }
 
