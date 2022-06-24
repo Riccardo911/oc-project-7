@@ -1,16 +1,28 @@
 <template>
     <nav class="nbar">
       <ul>
-        <li><router-link to="/home">Home</router-link></li>
+        <!-- if user is not logged -->
         <li style="float: right"><router-link to="/Register">Register</router-link></li>
         <li style="float: right"><router-link to="/Login">Login</router-link></li>
+        <!-- if user is logged -->
+        <li  ><router-link to="/home">Home</router-link></li>
+        <li style="float: right" @click="logout()"><router-link to="/">Logout</router-link></li>
+        <li style="float: right"><router-link to="/Profile">Profile</router-link></li>
       </ul>
     </nav>
 </template>
 
 <script>
   export default {
-    name: "Nav-bar"
+    name: "Nav-bar",
+
+    methods: {
+
+      logout() {
+        localStorage.clear()
+        this.$router.push('/')
+      }
+    }
   };
 </script>
 
