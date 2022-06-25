@@ -5,8 +5,9 @@
           <div class="profile-img"></div>
           <div class="nav-user">
             <button @click="newPost">Create post</button>
+            <button @click="getPosts()">All posts</button>
             <button>Unread</button>
-            <button>My posts</button>
+            <button @click="myPosts(user)">My posts</button>
           </div>
         </div>
     </section>
@@ -22,7 +23,9 @@
           <button>Comment</button>
           <button>Like</button>
           <button>Dislike</button>
-          <button>Modify</button>
+          <button
+          v-if="post.userId == user">
+          Update</button>
           <button 
           v-if="post.userId == user" 
           id="delete-button" 
@@ -50,10 +53,38 @@
 
     methods: {
 
+      /////////////////////////////////////////////////////////////////////
+       async getPosts() {
+        const url = `/post/all/`
+        await axios.get(url, {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        }).then(response => {
+          let posts = response.data;
+          this.allPosts = posts
+        }).catch(error => { console.log(error)});
+      },
+
+      /////////////////////////////////////////////////////////////////////
+      async myPosts(user) {
+        const url = `/post/all/${user}`
+        await axios.get(url, {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        }).then(response => {
+          let posts = response.data;
+          this.allPosts = posts
+        }).catch(error => { console.log(error)});
+      },
+
+      /////////////////////////////////////////////////////////////////////
       newPost() {
         this.$router.push('home/create') 
       },
 
+      /////////////////////////////////////////////////////////////////////
       async deletePost(postId){
         const url = `/post/all/${postId}`
 
@@ -70,7 +101,7 @@
           }).catch((error) => console.log(error.message))
       },
 
-      // async updatePost()
+      /////////////////////////////////////////////////////////////////////
 
     },
 
@@ -136,7 +167,11 @@ button {
 
 button:hover{
   border-color: aqua;
-  transition: 0.8s;
+  transition: 0.9s;
+}
+button:active {
+  background:rgb(1, 49, 1);
+  opacity: 0.95;
 }
 
 .post {

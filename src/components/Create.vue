@@ -1,20 +1,15 @@
 <template>
   <section>
     <div class="post">
-      <!-- <div class="post_user">
-        <div class="profile-img"></div>
-        <div class="profile-name"></div>
-      </div> -->
       <div class="post_content">
         <form @submit.prevent="createPost">
           <textarea type="text" name="text" col="5" placeholder="Write some text..." required v-model="post.postText"></textarea>
-          <input id="reset" type="reset" value="Reset">
-          <input type="submit" value="Create">
+          <input  type="file" name="img" id="imgInput" accept="image/png, image/jpeg">
         </form>
       </div>
       <div class="post_buttons">
-        <button>Post</button>
-        <!-- <button id="delete-button">Delete</button> -->
+        <button @click="createPost()">Post</button>
+        <button @click="resetPost()">Reset</button>
       </div>
     </div>
   </section>
@@ -35,20 +30,37 @@
       }
     },
     methods: {
+
+      ////////////////////////////////////////////////////////////
       async createPost() {
-        this.postSting = JSON.stringify(this.post);
-        await axios.post('post/create', this.postSting, {
-          headers : {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('token')
-          }
-        }).then(response => {
-          let post = JSON.parse(response.data)
-          console.log(post)
-        }).catch(error => {
-          console.log(error)
-        })
-      }
+        if (this.post.postText == '') {
+          alert('Please write some text or add image!')
+        } else {
+          this.postSting = JSON.stringify(this.post);
+          await axios.post('post/create', this.postSting, {
+            headers : {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+          }).then(response => {
+            let post = JSON.parse(response.data)
+            console.log(post)
+          }).catch(error => {
+            console.log(error)
+          })  
+        }
+      },
+
+      ////////////////////////////////////////////////////////////
+      resetPost() {
+          this.post.postText = ''
+        },
+
+      ////////////////////////////////////////////////////////////
+      
+
+
+
     }
   }
 </script>
@@ -81,10 +93,20 @@
     border-color: aqua;
     transition: 0.8s;
   }
+
+  #imgInput {
+    position: relative;
+    top:10px;
+    left:0px;
+  }
 </style>
 
 <style scoped>
   .post_content{
     min-height: 150px;
+  }
+
+  .post_buttons {
+    margin-top: 50px
   }
 </style>

@@ -1,126 +1,140 @@
 <template>
   <section class="login-box">
     <form @submit.prevent="handleLogin">
-        <div class="login-form">
-            <div class="center">
-                <h3>Login</h3>
+      <div class="login-form">
+        <div class="center">
+          <h3>Login</h3>
 
-                <div class="form-group">
-                    <label></label>
-                    <input type="email" class="form-control" v-model="email" placeholder="Email" required />
-                </div>
+          <div class="form-group">
+            <label></label>
+            <input
+              type="email"
+              class="form-control"
+              v-model="email"
+              placeholder="Email"
+              required
+            />
+          </div>
 
-                <div class="form-group">
-                    <label></label>
-                    <input type="password" class="form-control" v-model="password" placeholder="Password" required />
-                </div>
+          <div class="form-group">
+            <label></label>
+            <input
+              type="password"
+              class="form-control"
+              v-model="password"
+              placeholder="Password"
+              required
+            />
+          </div>
 
-                <input type="submit" value="Login">
+          <input type="submit" value="Login" />
 
-                <div class="register_link">
-                    Not a member? <router-link to="/Register">Register</router-link>
-                </div>
-            </div>
+          <div class="register_link">
+            Not a member? <router-link to="/Register">Register</router-link>
+          </div>
         </div>
+      </div>
     </form>
   </section>
 </template>
 
 <script>
-
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   name: "Login-form",
-  
+
   data() {
     return {
-        email : '',
-        password: ''
-    }
+      email: "",
+      password: "",
+    };
   },
+
   methods: {
     async handleLogin() {
-        const response = await axios.post('/api/user/login', {
+      try {
+            const response = await axios.post("/api/user/login", {
             email: this.email,
             password: this.password,
-        });
-        console.log(response)
-        localStorage.setItem('token', response.data.token);
-        //user logged info stored
-        localStorage.setItem('userId', response.data.userID);
-        localStorage.setItem('firstName', response.data.firstName);
-        localStorage.setItem('lastName', response.data.lastName);
-
-        //redirect to home after login
-        if (response.status == 200 ) {
-            this.$router.push('home')     
+            });
+            localStorage.setItem("token", response.data.token);
+            //user logged info stored
+            localStorage.setItem("userId", response.data.userID);
+            //redirect to home after login
+            if (response.status == 200) {
+            this.$router.push("home");
+            }
+        } catch (err) {
+            if (err.response.status == 404) {
+                alert("User doesn't exist!")
+            }
         }
-    }
-  }
+    },
+  },
 };
+
 </script>
 
 <style>
-    .login-box{
-        /* border: 1px solid black; */
-        display: block;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 250px;
-        margin-top: 250px;
-    }
+.login-box {
+  /* border: 1px solid black; */
+  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 250px;
+  margin-top: 250px;
+}
 
-    .login-form{
-        border: 1px solid black;
-        border-radius: 10px;
-        width: 100%;
-        height: 300px;
-        background-color: #333;
-        color: white;
-        padding: 60px;
-    }
+.login-form {
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 100%;
+  height: 300px;
+  background-color: #333;
+  color: white;
+  padding: 60px;
+}
 
-    .center h3{
-        text-align: center;
-        padding: 0 0 20px 0;
-        border-bottom: 1px solid ;
-    }
+.center h3 {
+  text-align: center;
+  padding: 0 0 20px 0;
+  border-bottom: 1px solid;
+}
 
-    .form-group {
-        padding:15px;
-        box-sizing: border-box;
-        text-align: center;
-    }
+.form-group {
+  padding: 15px;
+  box-sizing: border-box;
+  text-align: center;
+}
 
-    input[type="submit"]{
-        margin-top: 30px;
-        width: 100%;
-        height: 50px;
-        border: 2px solid white;
-        background: green;
-        color: white;
-        border-radius: 10px;
-    }
+input[type="submit"] {
+  margin-top: 30px;
+  width: 100%;
+  height: 50px;
+  border: 2px solid white;
+  background: green;
+  color: white;
+  border-radius: 10px;
+}
 
-    input[type="submit"]:hover{
-        border-color: aqua;
-        transition: 0.8s;
-    }
+input[type="submit"]:hover {
+  border-color: aqua;
+  transition: 0.8s;
+}
 
-    .register_link{
-        margin-top: 30px;
-        text-align: center;
-    }
+.register_link {
+  margin-top: 30px;
+  text-align: center;
+}
 
-    .register_link a{
-        color:aqua;
-        text-decoration: none;
-    }
+.register_link a {
+  color: aqua;
+  text-decoration: none;
+}
 
-    .register_link a:hover{
-        text-decoration: underline;
-    }
-
+.register_link a:hover {
+  text-decoration: underline;
+}
 </style>
