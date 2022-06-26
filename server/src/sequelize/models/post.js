@@ -8,9 +8,13 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ User }) {
+    static associate({ User, Like , Comment }) {
       // define association here
       this.belongsTo(User, { foreignKey: 'userId'})
+
+      this.hasMany(Like, { foreignKey: 'postId'})
+
+      this.hasMany(Comment, { foreignKey: 'postId'})
     }
   }
   Post.init({
@@ -21,9 +25,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:false
     },
     postText: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull:false
     },
+    // date: {
+    //   type: DataTypes.DATE,
+    //   allowNull:false
+    // },
     // imageURL: {
     //     type: DataTypes.STRING,
     //     allowNull:false
@@ -40,8 +48,8 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     tableName: 'posts',
     modelName: 'Post',
-    timestamps: false,
-    alter: true
+    timestamps: true,
+    // alter: true
   });
   return Post;
 };
