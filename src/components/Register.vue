@@ -121,6 +121,7 @@ export default {
   background-color: #333;
   color: white;
   padding: 60px;
+  box-shadow: 0px 2px 8px rgb(0, 0, 0, 1);
 }
 
 .center h3 {
