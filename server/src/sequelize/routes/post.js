@@ -14,10 +14,12 @@ try {
 
     //GET
     router.get('/all' , auth , postCtrl.getAllPosts)
-    // router.get('/all/:id', auth , postCtrl.getPostsByUser)
+    router.get('/all/:id', auth , postCtrl.getPostsByUser)
+    router.get('/all/like', auth , postCtrl.getLikes)
 
     //POST
     router.post('/create/', auth, postCtrl.createPost)
+    router.post('/all/:id/like', auth, postCtrl.likePost)
 
     //DELETE
     router.delete('/all/:id', auth, postCtrl.deletePost)
