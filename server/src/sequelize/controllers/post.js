@@ -2,7 +2,7 @@
                 Post controllers
 ******************************************************/
 
-const { User , Post } = require('../models/index')
+const { User , Post, Like, sequelize } = require('../models/index')
 const jwt = require('jsonwebtoken');
 
 
@@ -23,11 +23,17 @@ exports.createPost = async (req, res) => {
 exports.getAllPosts = async (req, res) => {
 
     try {
-        const posts = await Post.findAll()          //search all posts in the DB 
-        return res.json(posts)
+      const posts = await Post.findAll({         //search all posts in the DB
+        order: [["createdAt", "DESC"]],
+        include: [{ model: User, attributes: { exclude: ['password', 'email', 'user_id']} }],
+        attributes: { 
+          include: [ 'post_id', [sequelize.fn("DATE_FORMAT", sequelize.col("createdAt"), "%d-%m-%Y %H:%i:%s" ), 'date']],
+          exclude: ['createdAt', 'updatedAt']}
+      });
+      return res.json(posts);
     } catch (err) {
-        console.log(err)
-        return res.status(500).json(err)
+      console.log(err);
+      return res.status(500).json(err);
     }
     
 }
@@ -35,17 +41,22 @@ exports.getAllPosts = async (req, res) => {
 //Get posts by author
 
 exports.getPostsByUser = async (req, res) => {
-    
-    try {
-        const posts = await Post.findAll({      //search all posts made by user_id
-            where: { userId : req.params.id }
-        })
-        return res.json(posts)  //return all posts made by user_id
-    } catch (err) {
-        console.log(err)
-        return res.status(500).json(err)
-    }
-}
+
+  try {
+    const posts = await Post.findAll({
+      where: { userId: req.params.id }, //search all posts made by user_id
+      include: [{ model: User, attributes: { exclude: ['password', 'email', 'user_id']} }],
+      attributes: { 
+        include: [ 'post_id', [sequelize.fn("DATE_FORMAT", sequelize.col("createdAt"), "%d-%m-%Y %H:%i:%s" ), 'date']],
+        exclude: ['createdAt', 'updatedAt']}
+    });
+    return res.json(posts);     //return all posts made by user_id
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
+  }
+
+};
 
 //delete a post by author
 
@@ -83,7 +94,26 @@ exports.deletePost = async (req, res) => {
     }).catch((error) => res.status(500).json(error))   
 };
 
+////////////////////////////////
+// TODO - Modify a post by author
+////////////////////////////////
 
-//Modify a post by author
+// like a post 
+
+exports.likePost = async (req, res) => {
+    let userId = req.body.userId
+    let postId = req.body.postId
+    let insert = { userId, postId }
+
+    await Like.create(insert)
+        .then((response) => res.status(201).json(response))
+};
+
+// get likes - render all likes 
+
+exports.getLikes = async (req, res) => {
+    
+  };
+
 
 
