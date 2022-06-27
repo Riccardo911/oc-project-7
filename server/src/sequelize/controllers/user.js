@@ -79,15 +79,24 @@ exports.profile = async (req, res, next) => {
 // delete user profile
 
 exports.deleteUser = async (req, res, next) => {
+
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, "secret_token_dev");
+  const userId = decodedToken.userID;
+
+  if(userId == req.params.id){
+    User.destroy({ 
+      where: { user_id : req.params.id }, force:true})
+      .then(() => {
+        res.status(200).json({ message: 'User deleted!' })
+      })
+      .catch((error) => {
+        res.status(400).json(error)
+    })
+  } else {
+    res.status(401).json({ message: 'Unauthorized!' })
+  }
   
-  await User.destroy({ 
-    where: { user_id : req.params.id }, force:true})
-    .then((response) => {
-      res.status(200).json(response)
-    })
-    .catch((error) => {
-      res.satus(400).json(error)
-    })
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
