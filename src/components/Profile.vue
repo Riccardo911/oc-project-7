@@ -6,26 +6,71 @@
       <div class="userInfo">Email: {{ user.email }}</div>
       <div class="profile-btn">
         <button>Update</button>
-        <button id="delete-button">Delete</button>
+        <button id="delete-button" @click="deleteUser()">Delete</button>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+
+import axios from 'axios';
+
 export default {
   name: "My-profile",
 
   data() {
     return {
       user: {
-        firstName: "test",
-        lastName: "test",
-        email: "test@example.com",
+        firstName: '',
+        lastName: '',
+        email: '',
       },
     };
   },
 
+  methods:{
+    //////////////////////////////////////////////////////////////////////////////////////////
+    //update user - axios put
+    //TODO
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    //delete user - axios delete
+    async deleteUser(){
+      const user = localStorage.userId
+      const url = `api/user/profile/${user}`
+      axios.delete(url, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      }).then(response => {
+        console.log(response)
+      }).catch(error => {
+        console.log(error)
+      })
+      this.$router.push('/')
+    }
+  },
+
+  
+  mounted() {
+    //////////////////////////////////////////////////////////////////////////////////////////
+    //get user data - axios get
+    const user = localStorage.userId
+    const url = `api/user/profile/${user}`
+    axios.get(url, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token")
+      }
+    }).then(response => {
+      let user = response.data
+      this.user.firstName = user.firstName
+      this.user.lastName = user.lastName
+      this.user.email = user.email
+    }).catch(error => {
+      console.log(error)
+    })
+  }
 
 };
 </script>

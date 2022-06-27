@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ User, Like , Comment }) {
       // define association here
-      this.belongsTo(User, { foreignKey: 'userId'})
+      this.belongsTo(User, { foreignKey: 'userId', onDelete: 'CASCADE'})
 
       this.hasMany(Like, { foreignKey: 'postId'})
 
