@@ -11,7 +11,8 @@ const userCtrl = require('../controllers/user')
 try{
     
     router.get('/profile/:id', auth, userCtrl.profile);
-    router.delete('/profile/:id', auth, userCtrl.deleteUser);
+    router.delete('/profile/:id/delete', auth, userCtrl.deleteUser);
+    router.put('/profile/:id/update', userCtrl.updateUser);
 
     router.post('/register', userCtrl.register);
     router.post('/login', userCtrl.login);

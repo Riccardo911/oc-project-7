@@ -46,7 +46,7 @@ exports.login = async (req, res, next) => {
         };
         bcrypt.compare(req.body.password, user.password).then((valid) => {
             if (!valid) {
-                return res.status(402).json({ error: 'Incorrect password!'});
+                return res.status(401).json({ error: 'Incorrect password!'});
             };
             res.status(200).json({
                 userID: user.user_id,
@@ -85,7 +85,7 @@ exports.deleteUser = async (req, res, next) => {
   const userId = decodedToken.userID;
 
   if(userId == req.params.id){
-    User.destroy({ 
+    await User.destroy({ 
       where: { user_id : req.params.id }, force:true})
       .then(() => {
         res.status(200).json({ message: 'User deleted!' })
@@ -103,5 +103,25 @@ exports.deleteUser = async (req, res, next) => {
 // update user profile
 
 exports.updateUser = async (req, res, next) => {
+
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, "secret_token_dev");
+  const userId = decodedToken.userID;
   
+  if( userId == req.params.id ){
+    let firstName = req.body.firstName
+    let lastName = req.body.lastName
+    let email = req.body.email
+    let insert = { firstName, lastName, email }
+    await User.update(insert, {where : { user_id: req.params.id }})
+    .then(() => {
+      res.status(200).json({ message: 'User updated!' })
+    })
+    .catch((error) => {
+      res.status(400).json(error)
+    })
+  } else {
+    res.status(401).json({ message: 'Unauthorized!' })
+  }
+
 }

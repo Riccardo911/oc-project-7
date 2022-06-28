@@ -1,12 +1,48 @@
 <template>
   <section>
-    <div class="profile">
-      <div class="userInfo">Name: {{ user.firstName }}</div>
-      <div class="userInfo">Surname: {{ user.lastName }}</div>
-      <div class="userInfo">Email: {{ user.email }}</div>
-      <div class="profile-btn">
-        <button>Update</button>
-        <button id="delete-button" @click="deleteUser()">Delete</button>
+    <div class="profile" v-if="user.firstName">
+      <h3>Profile</h3>
+      <br>
+      <div class="user-container">
+        <div class="userInfo-label">Name</div>
+        <div class="userInfo" v-if="showUpdateInput==false">{{ user.firstName }}</div>
+        <div class="userUpdate" v-if="showUpdateInput==true">  
+          <input 
+            type="text"
+            class="userUpdate"
+            v-model="userUpdate.firstName"
+            placeholder="Update your name..."
+            required/>
+        </div>
+        <div class="userInfo-label">Last Name</div>
+        <div class="userInfo" v-if="showUpdateInput==false">{{ user.lastName }}</div>
+        <div class="userUpdate" v-if="showUpdateInput==true">  
+          <input
+            type="text"
+            class="userUpdate"
+            v-model="userUpdate.lastName"
+            placeholder="Update your last name..."
+            required/>
+        </div>
+        <div class="userInfo-label">Email</div>
+        <div class="userInfo" v-if="showUpdateInput==false">{{ user.email }}</div>
+        <div class="userUpdate" v-if="showUpdateInput==true"> 
+          <input
+            type="email"
+            name="email"
+            class="userUpdate"
+            v-model="userUpdate.email"
+            placeholder="Update your email..."
+            required/>
+        </div>
+      </div>
+      <div>
+        <div class="profile-btn">
+          <button @click="toggle()" v-if="showUpdateInput==false">Update</button>
+          <button @click="updateUser()" v-if="showUpdateInput==true" id="confirmButton">Confirm</button>
+          <button @click="toggle()" v-if="showUpdateInput==true" id="backButton">Back</button>
+          <button id="delete-button" @click="deleteUser()" v-if="showUpdateInput==false">Delete</button>
+        </div>
       </div>
     </div>
   </section>
@@ -26,20 +62,56 @@ export default {
         lastName: '',
         email: '',
       },
+      showUpdateInput:false,
+      userUpdate :{
+        firstName: '',
+        lastName: '',
+        email: '',
+      }
     };
   },
 
   methods:{
     //////////////////////////////////////////////////////////////////////////////////////////
+    //update user - show input
+    toggle() {
+      this.showUpdateInput = !this.showUpdateInput
+    },
+
+    //////////////////////////////////////////////////////////////////////////////////////////
     //update user - axios put
-    //TODO
+    async updateUser(){
+      const user = localStorage.userId
+      const url = `api/user/profile/${user}/update`
+      const updateUser = { 
+        firstName: this.userUpdate.firstName,
+        lastName: this.userUpdate.lastName,
+        email: this.userUpdate.email
+      }
+      await axios.put(url, updateUser, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
+      .then((response) => {
+        const res = response.data;
+        console.log(res);
+        alert('User updated!')
+        this.$router.push('/home')
+      })
+      .catch((error) => {
+        alert(error.message)
+      });
+      
+    },
 
     //////////////////////////////////////////////////////////////////////////////////////////
     //delete user - axios delete
     async deleteUser(){
       const user = localStorage.userId
-      const url = `api/user/profile/${user}`
-      axios.delete(url, {
+      const url = `api/user/profile/${user}/delete`
+      await axios.delete(url, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
         }
@@ -53,12 +125,12 @@ export default {
   },
 
   
-  mounted() {
+  async mounted() {
     //////////////////////////////////////////////////////////////////////////////////////////
     //get user data - axios get
     const user = localStorage.userId
     const url = `api/user/profile/${user}`
-    axios.get(url, {
+    await axios.get(url, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token")
       }
@@ -76,6 +148,7 @@ export default {
 </script>
 
 <style>
+
 .profile {
   justify-content: center;
   align-items: center;
@@ -83,20 +156,44 @@ export default {
   margin-top: 250px;
   min-height: 400px;
   width: 40%;
+  max-width: 500px;
   border-radius: 15px;
   padding: 40px;
+  padding-top:50px;
   background: #333;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
+
+.profile h3{
+  color: white;
+  border-bottom: 1px solid;
+  text-align: center;
+  padding-bottom: 20px;
 }
 
 .userInfo {
   border: 1px solid black;
   background: white;
   min-height: 30px;
-  width: 75%;
+  width: 90%;
+  max-width: 500px;
   margin: auto;
-  margin-top: 50px;
+  margin-top: 5px;
+  margin-bottom: 25px;
   border-radius: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+}
+
+.userInfo-label {
+  padding-left: 5px;
+  min-height: 10px;
+  max-width: 500px;
+  width: 90%;
+  margin: auto;
+  font-size: medium;
+  color: white
 }
 
 .profile-btn {
@@ -104,6 +201,45 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 80px;
+  margin-top: 70px;
+  margin-bottom: 30px;
+}
+
+.userUpdate {
+  text-align: center;
+}
+.userUpdate input {
+  background: white;
+  min-height: 30px;
+  width: 90%;
+  max-width: 500px;
+  margin: auto;
+  margin-top: 5px;
+  margin-bottom: 25px;
+  margin-right: 5px;
+  margin-left: 5px;
+  border-radius: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+}
+
+#backButton{
+  background-color: #333;
+}
+
+#confirmButton{
+  background-color: #333;
+}
+
+#confirmButton:hover{
+  background-color: green;
+}
+
+@media only screen and (max-width: 768px) {
+  .profile {
+    width:75%;
+    margin-top:120px;
+  }
 }
 </style>
