@@ -4,7 +4,7 @@
       <div class="login-form">
         <div class="center">
           <h3>Login</h3>
-
+          <br>
           <div class="form-group">
             <label></label>
             <input
@@ -79,7 +79,7 @@ export default {
 <style>
 .login-box {
   /* border: 1px solid black; */
-  display: block;
+  /* display: block; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,10 +91,10 @@ export default {
   border: 1px solid black;
   border-radius: 10px;
   width: 100%;
-  height: 300px;
   background-color: #333;
   color: white;
   padding: 60px;
+  box-shadow: 0px 2px 8px rgb(0, 0, 0, 1);
 }
 
 .center h3 {

@@ -5,7 +5,7 @@
 const { User , Post, Like, sequelize } = require('../models/index')
 const jwt = require('jsonwebtoken');
 
-
+//////////////////////////////////////////////////////////////////////////////////////////
 //create post
 exports.createPost = async (req, res) => {
     //data from Create component
@@ -18,25 +18,27 @@ exports.createPost = async (req, res) => {
     })
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////
 //get all post - view in the home page all posts
 
 exports.getAllPosts = async (req, res) => {
 
-    try {
-      const posts = await Post.findAll({         //search all posts in the DB
-        order: [["createdAt", "DESC"]],
-        include: [{ model: User, attributes: { exclude: ['password', 'email', 'user_id']} }],
-        attributes: { 
-          include: [ 'post_id', [sequelize.fn("DATE_FORMAT", sequelize.col("createdAt"), "%d-%m-%Y %H:%i:%s" ), 'date']],
-          exclude: ['createdAt', 'updatedAt']}
-      });
-      return res.json(posts);
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json(err);
-    }
+  try {
+    const posts = await Post.findAll({         //search all posts in the DB
+      order: [["createdAt", "DESC"]],
+      include: [{ model: User, attributes: { exclude: ['password', 'email', 'user_id']} }],
+      attributes: { 
+        include: [ 'post_id', [sequelize.fn("DATE_FORMAT", sequelize.col("createdAt"), "%d-%m-%Y %H:%i:%s" ), 'date']],
+        exclude: ['createdAt', 'updatedAt']}
+    });
+    return res.json(posts);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
+  }
     
 }
+
 
 //Get posts by author
 
@@ -78,7 +80,7 @@ exports.deletePost = async (req, res) => {
         }
         // check if the user is authorized -> post by author == user who wants delete post ?
         if ( post.userId !== userId ) {
-            return res.status(403).json({
+            return res.status(401).json({
                 error: 'Unauthorized!'
             });
         }
@@ -113,7 +115,7 @@ exports.likePost = async (req, res) => {
 
 exports.getLikes = async (req, res) => {
     
-  };
+};
 
 
 

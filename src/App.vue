@@ -26,6 +26,7 @@ export default {
     // Login,
     // Footer,
   },
+  
 };
 </script>
 
@@ -35,12 +36,13 @@ export default {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-size: 25px;
+  font-size: x-large;
+  font-weight: 500;
 }
 
 body {
   background: #fcfcfc;
-  /* height: 100vh; */
+  height: 100vh;
   /* overflow: hidden; */
 }
 

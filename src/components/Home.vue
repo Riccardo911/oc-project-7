@@ -1,6 +1,6 @@
 <template>
   <article>
-     <section class="sticky">
+     <section v-if="user" class="sticky">
         <div class="create-post-form">
           <div class="profile-img">
             <img src="../images/default_user_icon.jpg">
@@ -20,7 +20,7 @@
             <img src="../images/default_user_icon.jpg">
           </div>
           <div>
-            <div class="profile-name">by {{ post.User.firstName }} {{post.User.lastName}}</div>
+            <div class="profile-name">by {{ post.User.firstName}} {{post.User.lastName}}</div>
             <div class="profile-name">at {{ post.date }}</div>
           </div>
         </div>
@@ -90,13 +90,13 @@
         async getPosts() {
             const url = `/post/all/`;
             await axios.get(url, {
-                headers: {
-                    Authorization: "Bearer " + localStorage.getItem("token")
-                }
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("token")
+              }
             }).then(response => {
                 let posts = response.data;
                 this.allPosts = posts;
-            }).catch(error => { console.log(error); });
+            }).catch(error => { console.log(error) });
         },
         /////////////////////////////////////////////////////////////////////
         async myPosts() {
@@ -109,7 +109,7 @@
             }).then(response => {
                 let posts = response.data;
                 this.allPosts = posts;
-            }).catch(error => { console.log(error); });
+            }).catch(error => { console.log(error)});
         },
         /////////////////////////////////////////////////////////////////////
         newPost() {
@@ -130,9 +130,9 @@
         },
         /////////////////////////////////////////////////////////////////////
     },
-    mounted() {
+    async mounted() {
         //get all post from the DB --> if authorized show posts in user home page
-        axios.get("/post/all", {
+        await axios.get("/post/all", {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("token")
             }
@@ -164,7 +164,8 @@
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   background-color: #333;
-  padding:10px
+  padding:10px;
+  max-width: 1200px;
 }
 
 .profile-img {
@@ -187,12 +188,13 @@
 .nav-user{
   min-height: 40px;
   width: 85%;
-  margin-top:20px;
-  margin-left: 20px;
-  margin-bottom:20px;
+  margin: 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
 button {
+  margin-left: 10px;
   margin-right: 10px;
   width: 200px;
   height: 40px;
@@ -200,7 +202,8 @@ button {
   background: green;
   color: white;
   border-radius: 10px;
-  font-size:18px
+  font-size:large;
+  font-weight: lighter;
 }
 
 button:hover{
@@ -246,7 +249,8 @@ button:active {
   margin:auto;
   margin-left:10px;
   margin-right:10px;
-  font-size:initial;
+  font-size:large;
+  font-weight: lighter;
 }
 
 .post_content {
@@ -255,8 +259,10 @@ button:active {
   /* border: 1px solid black; */
   min-height: 150px;
   padding:10px;
-  font-size:large;
   overflow-wrap: break-word;
+  font-size:large;
+  font-weight: lighter;
+  text-align: justify;
 }
 
 .post_buttons{
@@ -264,7 +270,7 @@ button:active {
   justify-content: center;
   border-radius: 10px;
   margin:auto;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   min-height: 30px;
   padding:10px
 }
@@ -274,19 +280,29 @@ button:active {
   width: 100px;
   height: 40px;
   border: 2px solid white;
-  background: green;
+  background: #333;
   color: white;
   border-radius: 10px;
-  font-size:14px
+  font-size:large;
+  font-weight: lighter;
 }
 
 .post_buttons button:hover {
-  border-color: aqua;
+  border-color: #333;
   transition: 0.8s;
+  background-color: green;
 }
 
 #delete-button{
-  background: red;
+  background: #333;
+}
+
+#delete-button:hover{
+  background: rgb(232, 3, 3);
+  /* color:black; */
+  border-color: #333;
+  transition: 0.4s;
+  font-weight:bold;
 }
 
 @media only screen and (max-width: 1252px) {
@@ -299,11 +315,15 @@ button:active {
   .post_buttons {
     display:block;
   }
+  
 }
 
-@media only screen and (max-width: 641px) {
+@media only screen and (max-width: 660px) {
   .create-post-form {
     text-align: center
+  }
+  .nav-user{
+    display: block;
   }
 }
 

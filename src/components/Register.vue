@@ -4,7 +4,7 @@
       <div class="register-form">
         <div class="center">
           <h3>Register</h3>
-
+          <br>
           <div class="form-group">
             <label></label>
             <input
@@ -117,7 +117,6 @@ export default {
   border: 1px solid black;
   border-radius: 10px;
   width: 100%;
-  height: 500px;
   background-color: #333;
   color: white;
   padding: 60px;
