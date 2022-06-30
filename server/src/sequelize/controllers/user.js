@@ -77,7 +77,6 @@ exports.profile = async (req, res, next) => {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // delete user profile
-
 exports.deleteUser = async (req, res, next) => {
 
   const token = req.headers.authorization.split(" ")[1];
@@ -101,7 +100,6 @@ exports.deleteUser = async (req, res, next) => {
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // update user profile
-
 exports.updateUser = async (req, res, next) => {
 
   const token = req.headers.authorization.split(" ")[1];

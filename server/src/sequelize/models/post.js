@@ -28,22 +28,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull:false
     },
-    // date: {
-    //   type: DataTypes.DATE,
-    //   allowNull:false
-    // },
-    // imageURL: {
-    //     type: DataTypes.STRING,
-    //     allowNull:false
-    // },
-    // likes: {
-    //     type: DataTypes.STRING,
-    //     allowNull:false
-    // },
-    // comment: {
-    //     type: DataTypes.STRING,
-    //     allowNull:false
-    // }
   },{
     sequelize,
     tableName: 'posts',

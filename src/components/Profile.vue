@@ -3,28 +3,30 @@
     <div class="profile" v-if="user.firstName">
       <h3>Profile</h3>
       <br>
-      <div class="user-container">
-        <div class="userInfo-label">Name</div>
+      <form>
+        <label class="userInfo-label" for="firstName">Name</label> 
         <div class="userInfo" v-if="showUpdateInput==false">{{ user.firstName }}</div>
         <div class="userUpdate" v-if="showUpdateInput==true">  
           <input 
             type="text"
+            name="firstName"
             class="userUpdate"
             v-model="userUpdate.firstName"
             placeholder="Update your name..."
             required/>
         </div>
-        <div class="userInfo-label">Last Name</div>
+        <label class="userInfo-label" for="lastName">Last Name</label> 
         <div class="userInfo" v-if="showUpdateInput==false">{{ user.lastName }}</div>
         <div class="userUpdate" v-if="showUpdateInput==true">  
           <input
             type="text"
+            name="lastName"
             class="userUpdate"
             v-model="userUpdate.lastName"
             placeholder="Update your last name..."
             required/>
         </div>
-        <div class="userInfo-label">Email</div>
+        <label class="userInfo-label" for="email">Email</label>
         <div class="userInfo" v-if="showUpdateInput==false">{{ user.email }}</div>
         <div class="userUpdate" v-if="showUpdateInput==true"> 
           <input
@@ -35,7 +37,7 @@
             placeholder="Update your email..."
             required/>
         </div>
-      </div>
+      </form>
       <div>
         <div class="profile-btn">
           <button @click="toggle()" v-if="showUpdateInput==false">Update</button>
@@ -187,7 +189,7 @@ export default {
 }
 
 .userInfo-label {
-  padding-left: 5px;
+  padding-left: 20px;
   min-height: 10px;
   max-width: 500px;
   width: 90%;

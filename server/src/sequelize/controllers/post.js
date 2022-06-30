@@ -39,7 +39,7 @@ exports.getAllPosts = async (req, res) => {
     
 }
 
-
+//////////////////////////////////////////////////////////////////////////////////////////
 //Get posts by author
 
 exports.getPostsByUser = async (req, res) => {
@@ -60,6 +60,7 @@ exports.getPostsByUser = async (req, res) => {
 
 };
 
+//////////////////////////////////////////////////////////////////////////////////////////
 //delete a post by author
 
 exports.deletePost = async (req, res) => {
@@ -96,9 +97,9 @@ exports.deletePost = async (req, res) => {
     }).catch((error) => res.status(500).json(error))   
 };
 
-////////////////////////////////
-// TODO - Modify a post by author
-////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+// like a post 
+// TODO
 
 // like a post 
 
@@ -111,7 +112,9 @@ exports.likePost = async (req, res) => {
         .then((response) => res.status(201).json(response))
 };
 
+//////////////////////////////////////////////////////////////////////////////////////////
 // get likes - render all likes 
+// TODO
 
 exports.getLikes = async (req, res) => {
     
