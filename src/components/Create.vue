@@ -58,9 +58,6 @@
 
       ////////////////////////////////////////////////////////////
       
-
-
-
     }
   }
 </script>
@@ -69,7 +66,7 @@
 
   textarea {
     height: 130px;
-    width: 97%;
+    width: -webkit-fill-available;
     resize:none;
     font-size:14px;
     padding: 10px;

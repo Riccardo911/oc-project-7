@@ -10,6 +10,7 @@ const { sequelize } = require("./sequelize/models")
 
 const userRoutes = require('./sequelize/routes/user')
 const postRoutes = require('./sequelize/routes/post')
+const commentRoutes = require('./sequelize/routes/comment')
 const { Post } = require('./sequelize/models/index');
 const { User } = require('./sequelize/models/index')
 const user = require('./sequelize/models/user');
@@ -21,7 +22,7 @@ app.use(cors())
 
 //sync with SQL database
 async function main() {
-    await sequelize.sync({ alter:true })
+    await sequelize.sync({ /*force:true*/ })
     console.log(chalk.bgGreen('Database synced!'))
 }
 main()
@@ -50,6 +51,8 @@ app.use('/api/user', userRoutes)
 //post
 app.use('/post', postRoutes)
 
+//comment
+app.use('/api/post/comment', commentRoutes)
 
 
 
