@@ -26,8 +26,10 @@ exports.getComment = async (req, res) => {
           order: [["createdAt", "ASC"]],
           include: [{ model: User, attributes: { exclude: ['password', 'email', 'user_id']} }],
           attributes: { 
-            include: [ 'postId', [sequelize.fn("DATE_FORMAT", sequelize.col("createdAt"), "%d-%m-%Y %H:%i:%s" ), 'date']],
-            exclude: ['createdAt', 'updatedAt']}
+            include: [ 'postId', 
+            [sequelize.fn("DATE_FORMAT", sequelize.col("createdAt"), "%d-%m-%Y %H:%i:%s" ), 'date']],
+            exclude: ['createdAt', 'updatedAt', 'id'],
+          },
         });
         return res.json(comments);
       } catch (err) {

@@ -11,8 +11,8 @@ const auth = require("../middlewares/auth");
 const commentCtrl = require("../controllers/comment");
 
     try {
-        router.get('/all', commentCtrl.getComment)
-        router.post('/create', commentCtrl.postComment)
+        router.get('/all', auth, commentCtrl.getComment)
+        router.post('/create', auth, commentCtrl.postComment)
 
     } catch (error) {
         console.log(error);
