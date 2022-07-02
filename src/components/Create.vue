@@ -26,7 +26,6 @@
           postText:'',
           userId: localStorage.userId
         },
-        postSting:''
       }
     },
     methods: {
@@ -36,18 +35,20 @@
         if (this.post.postText == '') {
           alert('Please write some text or add image!')
         } else {
-          this.postSting = JSON.stringify(this.post);
-          await axios.post('post/create', this.postSting, {
+          let text = this.post.postText
+          let userId = this.post.userId
+          const url = '/post/newPost'
+          await axios.post(url, { text, userId }, {
             headers : {
-              'Content-Type': 'application/json',
               Authorization: 'Bearer ' + localStorage.getItem('token')
             }
-          }).then(response => {
-            let post = JSON.parse(response.data)
-            console.log(post)
-          }).catch(error => {
-            console.log(error)
-          })  
+          }).then((response) => {
+          console.log(response);
+          this.$router.push('/home')
+          })
+          .catch((error) => {
+          console.log(error);
+          });
         }
       },
 

@@ -8,14 +8,13 @@ const jwt = require('jsonwebtoken');
 //////////////////////////////////////////////////////////////////////////////////////////
 //create post
 exports.createPost = async (req, res) => {
-    //data from Create component
-    let postText = req.body.postText
-    let userId = req.body.userId
-    let insert = { postText, userId }
+  let postText = req.body.text 
+  let userId = req.body.userId
+  let insert = { postText, userId }
 
-    await Post.create(insert).then((response) => {
-        res.status(201).json(JSON.stringify(response))
-    })
+  await Post.create(insert).then((response) => {
+    res.status(201).json(response)
+  })
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -96,29 +95,3 @@ exports.deletePost = async (req, res) => {
 
     }).catch((error) => res.status(500).json(error))   
 };
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// like a post 
-// TODO
-
-// like a post 
-
-exports.likePost = async (req, res) => {
-    let userId = req.body.userId
-    let postId = req.body.postId
-    let insert = { userId, postId }
-
-    await Like.create(insert)
-        .then((response) => res.status(201).json(response))
-};
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// get likes - render all likes 
-// TODO
-
-exports.getLikes = async (req, res) => {
-    
-};
-
-
-

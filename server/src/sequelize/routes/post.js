@@ -13,13 +13,11 @@ const postCtrl = require('../controllers/post')
 try {
 
     //GET
-    router.get('/all' , auth , postCtrl.getAllPosts)
-    router.get('/all/:id', auth , postCtrl.getPostsByUser)
-    router.get('/all/like', auth , postCtrl.getLikes)
+    router.get('/all', auth, postCtrl.getAllPosts)
+    router.get('/all/:id', auth, postCtrl.getPostsByUser)
 
     //POST
-    router.post('/create/', auth, postCtrl.createPost)
-    router.post('/all/:id/like', auth, postCtrl.likePost)
+    router.post('/newPost', auth, postCtrl.createPost)
 
     //DELETE
     router.delete('/all/:id', auth, postCtrl.deletePost)

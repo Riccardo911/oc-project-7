@@ -54,21 +54,22 @@ export default {
   methods: {
     async handleLogin() {
       try {
-            const response = await axios.post("/api/user/login", {
-            email: this.email,
-            password: this.password,
-            });
-            localStorage.setItem("token", response.data.token);
-            //user logged info stored
-            localStorage.setItem("userId", response.data.userID);
-            //redirect to home after login
-            if (response.status == 200) {
-            this.$router.push("home");
-            }
+        const response = await axios.post("/api/user/login", {
+        email: this.email,
+        password: this.password,
+        });
+        localStorage.setItem("token", response.data.token);
+        //user logged info stored
+        localStorage.setItem("userId", response.data.userID);
+        //redirect to home after login
+        if (response.status == 200) {
+          // this.$router.push("home");
+          window.location.assign('/home')
+          }
         } catch (err) {
-            if (err.response.status == 404) {
-                alert("User doesn't exist!")
-            }
+          if (err.response.status == 404) {
+            alert("User doesn't exist!")
+          }
         }
     },
   },

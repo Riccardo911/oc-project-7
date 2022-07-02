@@ -5,15 +5,16 @@ import Login from '@/components/Login.vue'
 import Register from '@/components/Register.vue'
 import Create from '@/components/Create.vue'
 import Profile from '@/components/Profile.vue'
-// import axios from 'axios'
-// import VueAxios from 'vue-axios'
+import Homepage from '@/components/Homepage.vue'
+
 
 Vue.use(Router)
-// Vue.use(VueAxios, axios)
+
 
 export default new Router ({
     mode: 'history', //remove # in url
     routes: [
+        {path: '/', component: Homepage},
         {path: '/home', component: Home},
         {path: '/login', component: Login},
         {path: '/register', component: Register},
