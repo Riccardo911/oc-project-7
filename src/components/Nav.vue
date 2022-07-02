@@ -2,12 +2,12 @@
     <nav class="nbar">
       <ul>
         <!-- if user is not logged -->
-        <li style="float: right"><router-link to="/Register">Register</router-link></li>
-        <li style="float: right"><router-link to="/Login">Login</router-link></li>
+        <li v-if="user==false" style="float: right"><router-link to="/Register">Register</router-link></li>
+        <li v-if="user==false" style="float: right"><router-link to="/Login">Login</router-link></li>
         <!-- if user is logged -->
-        <li  ><router-link to="/home">Home</router-link></li>
-        <li style="float: right" @click="logout()"><router-link to="/">Logout</router-link></li>
-        <li style="float: right"><router-link to="/Profile">Profile</router-link></li>
+        <li class="logo" v-if="user==true"><router-link to="/home"><img src="../assets/groupomania_logo.png" alt="groupomania_logo"></router-link></li>
+        <li v-if="user==true" style="float: right" @click="logout()"><router-link to="/">Logout</router-link></li>
+        <li v-if="user==true" style="float: right"><router-link to="/Profile">Profile</router-link></li>
       </ul>
     </nav>
 </template>
@@ -16,13 +16,28 @@
   export default {
     name: "Nav-bar",
 
-    methods: {
+    data(){
+      return{
+        user:false
+      }
+    },
 
+    methods: {
       logout() {
         localStorage.clear()
-        this.$router.push('/')
+        // this.$router.push('/', () => {})
+        window.location.assign('/');
+      },
+    },
+
+    beforeMount() {
+      let userId = localStorage.userId
+      if(userId){
+        this.user = true
+      } else {
+        this.user = false
       }
-    }
+    },
   };
 </script>
 
@@ -72,7 +87,10 @@ li {
   border-left: 1px solid #bbb;
 }
 
-/* li:last-child {
-    border-right: none;
-  } */
+</style>
+
+<style scoped>
+.logo img {
+  width: 135px;
+}
 </style>
