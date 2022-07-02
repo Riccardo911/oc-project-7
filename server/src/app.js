@@ -11,6 +11,7 @@ const { sequelize } = require("./sequelize/models")
 const userRoutes = require('./sequelize/routes/user')
 const postRoutes = require('./sequelize/routes/post')
 const commentRoutes = require('./sequelize/routes/comment')
+const likeRoutes = require('./sequelize/routes/like')
 const { Post } = require('./sequelize/models/index');
 const { User } = require('./sequelize/models/index')
 const user = require('./sequelize/models/user');
@@ -53,6 +54,9 @@ app.use('/post', postRoutes)
 
 //comment
 app.use('/api/post/comment', commentRoutes)
+
+//like
+app.use('/api/post/like', likeRoutes)
 
 
 

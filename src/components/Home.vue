@@ -1,17 +1,17 @@
 <template>
   <article>
-     <section v-if="user" class="sticky">
-        <div class="create-post-form">
-          <div class="profile-img">
-            <img src="../images/default_user_icon.jpg">
-          </div>
-          <div class="nav-user">
-            <button @click="newPost">Create post</button>
-            <button @click="getPosts()">All posts</button>
-            <button>Unread</button>
-            <button @click="myPosts()">My posts</button>
-          </div>
+    <section v-if="user" class="sticky">
+      <div class="create-post-form">
+        <div class="profile-img">
+          <img src="../images/default_user_icon.jpg">
         </div>
+        <div class="nav-user">
+          <button @click="newPost">Create post</button>
+          <button @click="getPosts()">All posts</button>
+          <button>Unread</button>
+          <button @click="myPosts()">My posts</button>
+        </div>
+      </div>
     </section>
     <section v-for="(post, index) in allPosts" :key="index">
       <div class="post">
@@ -20,59 +20,58 @@
             <img src="../images/default_user_icon.jpg">
           </div>
           <div>
-            <div class="profile-name">by {{ post.User.firstName}} {{post.User.lastName}}</div>
+            <div class="profile-name">by {{ post.User.firstName }} {{ post.User.lastName }}</div>
             <div class="profile-name">at {{ post.date }}</div>
           </div>
         </div>
-        <div class="post_content">{{post.postText}}</div>
+        <!-- post content -->
+        <div class="post_content">{{ post.postText }}</div>
+        <!-- like -->
+        <div v-for="(like, index) in allLikes" :key="index">
+          <div class="like" v-if="post.post_id == like.postId">{{ like.n_like }} people like this post</div>
+        </div>
+        <!-- post buttons -->
         <div class="post_buttons">
           <button @click="toggleInput()">Comment</button>
-          <button @click="like(post.post_id)">Like</button>
-          <button>Dislike</button>
-          <button
-          v-if="post.userId == user">
-          Update</button>
-          <button 
-          v-if="post.userId == user" 
-          id="delete-button" 
-          @click="deletePost(post.post_id)">
-          Delete</button>
-        </div>
+          <button @click="likes(post.post_id)">Like</button>
+          <button v-if="post.userId == user">
+            Update</button>
+          <button v-if="post.userId == user" id="delete-button" @click="deletePost(post.post_id)">
+            Delete</button>
+        </div> 
       </div>
+      <!-- comment input -->
       <div class="commentInput" v-if="comment.showInput == true">
         <textarea placeholder="Write some text..." v-model="comment.comText"></textarea>
         <button @click="postComment(post.post_id)">Post</button>
         <button @click="resetComment()">Reset</button>
       </div>
-   
-      <div class="comments" v-for="(comment, index) in comment.all" :key="index" >
-        <div v-if="post.post_id === comment.postId">
+      <!-- comments -->
+      <div class="comments" v-for="(comment, index) in comment.all" :key="index">
+        <div v-if="post.post_id == comment.postId">
           <div class="post_user">
             <div class="profile-img-post">
               <img src="../images/default_user_icon.jpg">
             </div>
             <div>
-              <div class="profile-name">by {{ comment.User.firstName}} {{ comment.User.lastName}}</div>
+              <div class="profile-name">by {{ comment.User.firstName }} {{ comment.User.lastName }}</div>
               <div class="profile-name">at {{ comment.date }}</div>
             </div>
-            </div>
-            <div class="comment-content">{{comment.comText}}</div>
-            <div class="post_buttons">
-              <button @click="like(post.post_id)">Like</button>
-              <button>Dislike</button>
-              <button
-              v-if="comment.userId == user">
+          </div>
+
+          <div class="comment-content">{{ comment.comText }}</div>
+          <div class="post_buttons">
+            <button v-if="comment.userId == user">
               Update</button>
-              <button 
-              v-if="comment.userId == user" 
-              id="delete-button" 
-              @click="deletePost(post.post_id)">
+            <button v-if="comment.userId == user" id="delete-button" @click="deletePost(post.post_id)">
               Delete</button>
           </div>
+
         </div>
       </div>
 
-    </section> 
+
+    </section>
   </article>
 </template>
 
@@ -86,7 +85,7 @@
       return {
         user: null,
         allPosts: [],
-        allLike: [],
+        allLikes: [],
         comment: {
           all: [], 
           showInput: false,
@@ -94,11 +93,38 @@
           postId:'',
           userId:'',
         },
+        like:{
+          postId:'',
+          userId:'',
+          liked: false
+        },
         dataLikeString: "",
       };
     },
 
     methods: {
+        /////////////////////////////////////////////////////////////////////
+        // user likes a post
+        async likes(postId) {
+          this.like.postId = postId;
+          this.like.userId = this.user;
+          if(this.like.liked == false ){ //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+          const url = `api/post/like/all/${postId}`;
+          await axios.post(url, {
+            userId: this.like.userId,
+          }, 
+          { headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")}
+          }).then(response => {
+            console.log(response);
+            this.like.liked = true;
+            window.location.reload();
+          }).catch(error => {
+            console.log(error);
+            this.like.liked = false;
+          });
+          }
+        },
       /////////////////////////////////////////////////////////////////////
       // user comment - post
       async postComment(postId) {
@@ -118,6 +144,7 @@
           })
           .then(response => {
             console.log(response);
+            window.location.reload();
           })
           .catch(error => {
             console.log(error);
@@ -135,25 +162,6 @@
         resetComment() {
           this.comment.comText = ''
         },
-        /////////////////////////////////////////////////////////////////////
-        // async like(postId) {
-        //     this.dataLike.postId = postId;
-        //     this.dataLike.userId = this.user;
-        //     // this.dataLikeString = JSON.stringify(this.dataLike)
-        //     const url = `/post/all/${postId}/like`;
-        //     await axios.post(url, {
-        //         userId: parseInt(this.dataLike.userId),
-        //         postId: this.dataLike.postId
-        //     }, { headers: {
-        //             // 'Content-Type': 'application/json',
-        //             Authorization: "Bearer " + localStorage.getItem("token")
-        //         }
-        //     }).then(response => {
-        //         console.log(response);
-        //     }).catch(error => {
-        //         console.log(error);
-        //     });
-        // },
         /////////////////////////////////////////////////////////////////////
         async getPosts() {
             const url = `/post/all/`;
@@ -200,7 +208,7 @@
     },
     async mounted() {
       /////////////////////////////////////////////////////////////////////
-      //get all post from the DB --> if authorized show posts in user home page
+      //get all posts from the DB --> if authorized show posts in user home page
       await axios.get("/post/all", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
@@ -213,7 +221,7 @@
       this.user = localStorage.getItem("userId");
 
       /////////////////////////////////////////////////////////////////////
-      // get all comment
+      // get all comments
       await axios.get("/api/post/comment/all", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
@@ -222,16 +230,33 @@
         let comments = response.data;
         this.comment.all = comments;
       }).catch(error => (console.log(error)));
-
-
+      /////////////////////////////////////////////////////////////////////
+      // get all likes
+      await axios.get("api/post/like/all", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      }).then(response => {
+        let likes = response.data;
+        this.allLikes = likes;
+      }).catch(error => (console.log(error)));
     },
 };
 </script>
 
 <style>
 
+.like {
+  font-weight: lighter;
+  font-size: large;
+  font-style: italic;
+  display:flex;
+  justify-content: flex-end;
+  padding-right: 15px;
+}
+
 .commentInput {
-  width: 60%;
+  width: 51%;
   min-height: 80px;
   margin:auto;
   margin-top:20px;
@@ -348,11 +373,11 @@ button:hover{
 .post_user {
   border-radius: 10px;
   margin:auto;
-  /* border: 1px solid black; */
   min-height: 60px;
   display:flex;
   justify-content: space-between;
   overflow: hidden;
+  font-style: italic;
 }
 
 .post_user .profile-img-post {
