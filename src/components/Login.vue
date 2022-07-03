@@ -6,7 +6,7 @@
           <h3>Login</h3>
           <br>
           <div class="form-group">
-            <label></label>
+            <label class="userForm-label" for="email">Email</label>
             <input
               type="email"
               class="form-control"
@@ -17,7 +17,7 @@
           </div>
 
           <div class="form-group">
-            <label></label>
+            <label class="userForm-label" for="password">Password</label>
             <input
               type="password"
               class="form-control"

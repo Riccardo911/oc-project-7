@@ -6,7 +6,7 @@
           <h3>Register</h3>
           <br>
           <div class="form-group">
-            <label></label>
+            <label class="userForm-label" for="first_name">First name</label> 
             <input
               type="first_name"
               class="form-control"
@@ -17,7 +17,7 @@
           </div>
 
           <div class="form-group">
-            <label></label>
+            <label class="userForm-label" for="last_name">Last name</label> 
             <input
               type="last_name"
               class="form-control"
@@ -28,18 +28,18 @@
           </div>
 
           <div class="form-group">
-            <label></label>
+            <label class="userForm-label" for="email">Email</label>
             <input
               type="email"
               class="form-control"
               v-model="email"
-              placeholder="Email"
+              placeholder="example@email.com"
               required
             />
           </div>
 
           <div class="form-group">
-            <label></label>
+            <label class="userForm-label" for="password">Password</label>
             <input
               type="password"
               class="form-control"
@@ -103,6 +103,17 @@ export default {
 </script>
 
 <style>
+
+.userForm-label{
+  min-height: 10px;
+  max-width: 500px;
+  width: 90%;
+  margin: auto;
+  color: white;
+  padding-bottom:5px;
+  font-size: x-large;
+}
+
 .register-box {
   /* border: 1px solid black; */
   display: block;
@@ -133,6 +144,7 @@ export default {
   padding: 15px;
   box-sizing: border-box;
   text-align: center;
+  display: grid;
 }
 
 input[type="submit"] {
@@ -163,4 +175,8 @@ input[type="submit"]:hover {
 .register_link a:hover {
   text-decoration: underline;
 }
+</style>
+
+<style scoped>
+
 </style>
