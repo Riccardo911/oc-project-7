@@ -4,7 +4,11 @@
       <div class="post_content">
         <form @submit.prevent="createPost">
           <textarea type="text" name="text" col="5" placeholder="Write some text..." required v-model="post.postText"></textarea>
-          <input  type="file" name="img" id="imgInput" accept="image/png, image/jpeg">
+          <div class="upload-button">
+            <input @change="handleFileUpload" lang="de"
+            type="file" ref="file" name="img" id="imgInput"
+            accept="image/png, image/jpeg, image/gif, image/jpg">
+          </div>
         </form>
       </div>
       <div class="post_buttons">
@@ -24,21 +28,31 @@
       return {
         post:{
           postText:'',
-          userId: localStorage.userId
+          userId: localStorage.userId,
+          imageUrl: null,
+          file:[],
         },
+        selectedFile: null
       }
     },
     methods: {
+
+      handleFileUpload(event) {
+        this.selectedFile = event.target.files[0]
+        console.log(this.selectedFile)
+      },
 
       ////////////////////////////////////////////////////////////
       async createPost() {
         if (this.post.postText == '') {
           alert('Please write some text or add image!')
         } else {
-          let text = this.post.postText
-          let userId = this.post.userId
+          const fd = new FormData()
+          fd.append('image', this.selectedFile)
+          fd.append('text', this.post.postText)
+          fd.append('userId', this.post.userId)
           const url = '/post/newPost'
-          await axios.post(url, { text, userId }, {
+          await axios.post(url, fd, {
             headers : {
               Authorization: 'Bearer ' + localStorage.getItem('token')
             }
@@ -64,6 +78,24 @@
 </script>
 
 <style>
+
+  .upload-button{
+    display: flex;
+  }
+
+  input[type=file]::file-selector-button {
+  padding: 5px 5px;
+  border-radius: 5px;
+  background-color: #333;
+  font-weight: lighter;
+  color: white;
+  }
+
+  input[type=file]::file-selector-button:hover {
+  background-color: green;
+  border: 2px solid #333;
+  transition: 0.8s;
+  }
 
   textarea {
     height: 130px;

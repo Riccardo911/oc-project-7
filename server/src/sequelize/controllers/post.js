@@ -8,13 +8,17 @@ const jwt = require('jsonwebtoken');
 //////////////////////////////////////////////////////////////////////////////////////////
 //create post
 exports.createPost = async (req, res) => {
+  let imageUrl = (req.file) ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null;
   let postText = req.body.text 
   let userId = req.body.userId
-  let insert = { postText, userId }
+  let insert = { postText, userId, imageUrl}
 
-  await Post.create(insert).then((response) => {
+  await Post.create(insert)
+  .then((response) => {
     res.status(201).json(response)
-  })
+  }).catch((error) => {
+    res.status(400).json(error);
+  });
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

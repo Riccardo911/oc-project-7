@@ -25,7 +25,10 @@
           </div>
         </div>
         <!-- post content -->
+          <!-- text -->
         <div class="post_content">{{ post.postText }}</div>
+          <!-- image -->
+        <div v-if="post.imageUrl != null" class="post_content"><img :src="post.imageUrl"></div>
         <!-- like -->
         <div v-for="(like, index) in allLikes" :key="index">
           <div class="like" v-if="post.post_id == like.postId">{{ like.n_like }} people like this post</div>
@@ -98,7 +101,6 @@
           userId:'',
           liked: false
         },
-        dataLikeString: "",
       };
     },
 
@@ -108,7 +110,7 @@
         async likes(postId) {
           this.like.postId = postId;
           this.like.userId = this.user;
-          if(this.like.liked == false ){ //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+          if(this.like.liked == false ){
           const url = `api/post/like/all/${postId}`;
           await axios.post(url, {
             userId: this.like.userId,
@@ -403,12 +405,20 @@ button:hover{
   border-radius: 10px;
   margin:auto;
   /* border: 1px solid black; */
-  min-height: 150px;
+  min-height: 40px;
   padding:10px;
   overflow-wrap: break-word;
   font-size:large;
   font-weight: lighter;
   text-align: justify;
+}
+
+.post_content img{
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .post_buttons{

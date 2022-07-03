@@ -7,14 +7,13 @@ const morgan = require('morgan')
 require('express-async-errors');
 const { Sequelize } = require("sequelize")
 const { sequelize } = require("./sequelize/models")
+const path = require('path')
 
 const userRoutes = require('./sequelize/routes/user')
 const postRoutes = require('./sequelize/routes/post')
 const commentRoutes = require('./sequelize/routes/comment')
 const likeRoutes = require('./sequelize/routes/like')
-const { Post } = require('./sequelize/models/index');
-const { User } = require('./sequelize/models/index')
-const user = require('./sequelize/models/user');
+
 
 
 const app = express();
@@ -44,7 +43,11 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
+//Middleware
+app.use('/images', express.static(path.join(__dirname, '../images')));
 
 //user login and register
 app.use('/api/user', userRoutes)
