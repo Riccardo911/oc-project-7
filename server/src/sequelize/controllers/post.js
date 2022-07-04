@@ -2,7 +2,7 @@
                 Post controllers
 ******************************************************/
 
-const { User , Post, Like, sequelize } = require('../models/index')
+const { User , Post, Like, Comment, sequelize } = require('../models/index')
 const jwt = require('jsonwebtoken');
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -22,14 +22,23 @@ exports.createPost = async (req, res) => {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
-//get all post - view in the home page all posts
+//get all posts - author of the post - comments of the post - authors of comments 
+// view in the home page
 
 exports.getAllPosts = async (req, res) => {
 
   try {
-    const posts = await Post.findAll({         //search all posts in the DB
+    const posts = await Post.findAll({
       order: [["createdAt", "DESC"]],
-      include: [{ model: User, attributes: { exclude: ['password', 'email', 'user_id']} }],
+      include: [
+        { model: User, attributes: { exclude: ['password', 'email', 'user_id']}},
+        { model: Comment, 
+          attributes: {
+          include: [ 'comText', 'postId', 'userId', [sequelize.fn("DATE_FORMAT", sequelize.col("comCreatedAt"), "%d-%m-%Y %H:%i:%s" ), 'comCreatedAt']],
+          exclude: ['id', 'comUpdatedAt']},
+            include: { model: User, attributes: {exclude:['password', 'email', 'user_id']}},
+        }
+      ],
       attributes: { 
         include: [ 'post_id', [sequelize.fn("DATE_FORMAT", sequelize.col("createdAt"), "%d-%m-%Y %H:%i:%s" ), 'date']],
         exclude: ['createdAt', 'updatedAt']}
