@@ -12,7 +12,7 @@ const likeCtrl = require('../controllers/like')
     
 try {
     
-     //GET
+    //GET
     router.get('/all', auth, likeCtrl.getLikes)
     
     //POST

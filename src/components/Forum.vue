@@ -29,14 +29,14 @@
         <div class="post_content">{{ post.postText }}</div>
           <!-- image -->
         <div v-if="post.imageUrl != null" class="post_content"><img :src="post.imageUrl"></div>
-        <!-- like -->
+        <!-- like counter-->
         <div v-for="(like, index) in allLikes" :key="index">
           <div class="like" v-if="post.post_id == like.postId">{{ like.n_like }} people like this post</div>
         </div>
         <!-- post buttons -->
         <div class="post_buttons">
           <button @click="toggleInput()">Comment</button>
-          <button @click="likes(post.post_id)">Like</button>
+            <button @click="likes(post.post_id)">Like</button>
           <button v-if="post.userId == user" @click="newPostUpdate(post.post_id)" >
             Update</button>
           <button v-if="post.userId == user" id="delete-button" @click="deletePost(post.post_id)">
@@ -281,7 +281,7 @@
       this.user = localStorage.getItem("userId");
 
       /////////////////////////////////////////////////////////////////////
-      // get all likes
+      // get all likes - counter
       await axios.get("api/post/like/all", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
