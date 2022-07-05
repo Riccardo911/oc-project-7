@@ -20,6 +20,8 @@ try {
     //POST
     router.post('/newPost', auth, multer, postCtrl.createPost)
 
+    //PUT
+    router.put('/updatePost/:id', auth, multer, postCtrl.updatePost)
     //DELETE
     router.delete('/all/:id', auth, postCtrl.deletePost)
 

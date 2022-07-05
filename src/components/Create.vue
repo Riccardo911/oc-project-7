@@ -14,6 +14,7 @@
       <div class="post_buttons">
         <button @click="createPost()">Post</button>
         <button @click="resetPost()">Reset</button>
+        <button @click="updatePost()">Update</button>
       </div>
     </div>
   </section>
@@ -30,7 +31,6 @@
           postText:'',
           userId: localStorage.userId,
           imageUrl: null,
-          file:[],
         },
         selectedFile: null
       }
@@ -43,6 +43,7 @@
       },
 
       ////////////////////////////////////////////////////////////
+      //create post
       async createPost() {
         if (this.post.postText == '') {
           alert('Please write some text or add image!')
@@ -67,12 +68,37 @@
       },
 
       ////////////////////////////////////////////////////////////
+      //update post
+      async updatePost() {
+        if (this.post.postText == '') {
+          alert('Please write some text or add image!')
+        } else {
+          const postId = localStorage.getItem('postUpdate')
+          const fd = new FormData()
+          fd.append('image', this.selectedFile)
+          fd.append('text', this.post.postText)
+          fd.append('userId', this.post.userId)
+          const url = `/post/updatePost/${postId}`
+          await axios.put(url, fd, {
+            headers : {
+              Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+          }).then((response) => {
+          console.log(response);
+          this.$router.push('/home')
+          })
+          .catch((error) => {
+          console.log(error);
+          });
+        }
+        localStorage.removeItem('postUpdate')
+      },
+
+      ////////////////////////////////////////////////////////////
+      // delete the textarea
       resetPost() {
           this.post.postText = ''
         },
-
-      ////////////////////////////////////////////////////////////
-      
     }
   }
 </script>

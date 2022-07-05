@@ -8,6 +8,7 @@ const fs = require('fs');
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //create post
+
 exports.createPost = async (req, res) => {
   let imageUrl = (req.file) ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null;
   let postText = req.body.text 
@@ -124,4 +125,32 @@ exports.deletePost = async (req, res) => {
     }
 
   }).catch((error) => res.status(500).json(error))   
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//update a post by author
+
+exports.updatePost = async (req, res) => {
+
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, "secret_token_dev");
+  const userId = decodedToken.userID;
+  
+  if( userId == req.body.userId ){
+    let imageUrl = (req.file) ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null;
+    let postText = req.body.text 
+    let userId = req.body.userId
+    let insert = { postText, userId, imageUrl }
+
+    await Post.update(insert, {where : { post_id: req.params.id }})
+    .then(() => {
+      res.status(200).json({ message: 'Post updated!' })
+    })
+    .catch((error) => {
+      res.status(400).json(error)
+    })
+  } else {
+    res.status(401).json({ message: 'Unauthorized!' })
+  }
+
 };

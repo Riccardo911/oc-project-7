@@ -37,7 +37,7 @@
         <div class="post_buttons">
           <button @click="toggleInput()">Comment</button>
           <button @click="likes(post.post_id)">Like</button>
-          <button v-if="post.userId == user">
+          <button v-if="post.userId == user" @click="newPostUpdate(post.post_id)" >
             Update</button>
           <button v-if="post.userId == user" id="delete-button" @click="deletePost(post.post_id)">
             Delete</button>
@@ -245,6 +245,12 @@
         /////////////////////////////////////////////////////////////////////
         newPost() {
             this.$router.push("home/create");
+        },
+         /////////////////////////////////////////////////////////////////////
+        newPostUpdate(postId) {
+          console.log(postId)
+          localStorage.setItem("postUpdate", postId)
+          this.$router.push("home/create");
         },
         /////////////////////////////////////////////////////////////////////
         // delete post
