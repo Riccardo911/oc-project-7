@@ -56,7 +56,7 @@ app.use('/api/user', userRoutes)
 app.use('/post', postRoutes)
 
 //comment
-app.use('/api/post/comment', commentRoutes)
+app.use('/api/comment', commentRoutes)
 
 //like
 app.use('/api/post/like', likeRoutes)

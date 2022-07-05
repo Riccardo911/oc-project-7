@@ -11,8 +11,9 @@ const auth = require("../middlewares/auth");
 const commentCtrl = require("../controllers/comment");
 
     try {
-        router.get('/all', auth, commentCtrl.getComment)
         router.post('/create', auth, commentCtrl.postComment)
+        router.delete('/delete/:id', auth, commentCtrl.deleteComment)
+        router.put('/update/:id', auth, commentCtrl.updateComment);
 
     } catch (error) {
         console.log(error);

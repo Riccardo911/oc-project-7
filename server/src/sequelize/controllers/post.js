@@ -4,6 +4,7 @@
 
 const { User , Post, Like, Comment, sequelize } = require('../models/index')
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //create post
@@ -35,7 +36,7 @@ exports.getAllPosts = async (req, res) => {
         { model: Comment, 
           attributes: {
           include: [ 'comText', 'postId', 'userId', [sequelize.fn("DATE_FORMAT", sequelize.col("comCreatedAt"), "%d-%m-%Y %H:%i:%s" ), 'comCreatedAt']],
-          exclude: ['id', 'comUpdatedAt']},
+          exclude: ['comUpdatedAt']},
             include: { model: User, attributes: {exclude:['password', 'email', 'user_id']}},
         }
       ],
@@ -84,27 +85,43 @@ exports.deletePost = async (req, res) => {
   const userId = decodedToken.userID;                               // ||||||||||||||||||||||||||||||||||
 
   await Post.findOne({ where : { post_id: postId }})
-    .then((post) => {
-        //check if post exists
-        if (!post) {
-            return res.status(404).json({
-                error: "Post doesn't exist!"
-            });
-        }
-        // check if the user is authorized -> post by author == user who wants delete post ?
-        if ( post.userId !== userId ) {
-            return res.status(401).json({
-                error: 'Unauthorized!'
-            });
-        }
-    // if tests pass --> delete post row on database
-    Post.destroy({ where: { post_id: postId } })
-        .then((response) => {
+  .then((post) => {
+    //check if post exists
+    if (!post) {
+      return res.status(404).json({
+        error: "Post doesn't exist!"
+      });
+    }
+    // check if the user is authorized -> post by author == user who wants delete post ?
+    if ( post.userId !== userId ) {
+      return res.status(401).json({
+        error: 'Unauthorized!'
+    });
+    }
+    // if tests pass --> delete image and row on database
+    // --> image delete from folder server/images
+    if( post.imageUrl != null ){
+      const filename = post.imageUrl.split('/images/')[1]
+      fs.unlink(`images/${filename}`, () => {
+      // --> row on database
+      Post.destroy({ where: { post_id: postId } })
+      .then((response) => {
         res.status(200).json(JSON.stringify(response));
-        })
-        .catch((error) => {
+      })
+      .catch((error) => {
         res.status(400).json(JSON.stringify(error));
-        });
+      });
+      })
+      } else {
+        // --> row on database
+      Post.destroy({ where: { post_id: postId } })
+      .then((response) => {
+        res.status(200).json(JSON.stringify(response));
+      })
+      .catch((error) => {
+        res.status(400).json(JSON.stringify(error));
+      });
+    }
 
-    }).catch((error) => res.status(500).json(error))   
+  }).catch((error) => res.status(500).json(error))   
 };

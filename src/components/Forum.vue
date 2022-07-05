@@ -44,11 +44,11 @@
         </div> 
       </div>
       <!-- comment input -->
-      <div class="commentInput" v-if="comment.showInput == true">
-        <textarea placeholder="Write some text..." v-model="comment.comText"></textarea>
-        <button @click="postComment(post.post_id)">Post</button>
-        <button @click="resetComment()">Reset</button>
-      </div>
+        <div class="commentInput" v-if="showInput == true">
+          <textarea placeholder="Write some text..." v-model="comment.comText"></textarea>
+          <button @click="postComment(post.post_id)">Post</button>
+          <button @click="resetComment()">Reset</button>
+        </div>
       <!-- comments -->
       <div class="comments" v-for="(comment, index) in post.Comments" :key="index">
           <div class="post_user">
@@ -61,12 +61,18 @@
             </div>
           </div>
           
-          <div class="comment-content" >{{ comment.comText }}</div>
+          <div class="comment-content">{{ comment.comText }}</div>
           <div class="post_buttons">
-            <button v-if="comment.userId == user">
+            <button v-if="comment.userId == user" @click="toggleInputUpdate()">
               Update</button>
-            <button v-if="comment.userId == user" id="delete-button" @click="deletePost(post.post_id)">
+            <button v-if="comment.userId == user" id="delete-button" @click="deleteComment(comment.id)">
               Delete</button>
+          </div>
+          <!-- comment input update-->
+          <div class="commentInputUpdate" v-if="showInputUpdate == true">
+            <textarea placeholder="Write some text..." v-model="updateCom"></textarea>
+            <button @click="updateComment(comment.id)">Update</button>
+            <button @click="resetCommentUpdate()">Reset</button>
           </div>
       </div>
 
@@ -86,11 +92,13 @@
         allPosts: [],
         allLikes: [],
         comment: {
-          showInput: false,
           comText:'',
           postId:'',
           userId:'',
         },
+        updateCom:'',
+        showInput: false,
+        showInputUpdate: false,
         like:{
           postId:'',
           userId:'',
@@ -100,8 +108,8 @@
     },
 
     methods: {
-        /////////////////////////////////////////////////////////////////////
-        // user likes a post
+      /////////////////////////////////////////////////////////////////////
+      // user likes a post
         async likes(postId) {
           this.like.postId = postId;
           this.like.userId = this.user;
@@ -123,6 +131,18 @@
           }
         },
       /////////////////////////////////////////////////////////////////////
+      // user comment - delete
+      async deleteComment(comId){
+        const url = `/api/comment/delete/${comId}`;
+          await axios.delete(url, {
+            headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+          }).then((response) => {
+            let res = JSON.parse(response.data);
+            console.log(res);
+            window.location.assign("/home");
+          }).catch((error) => console.log(error.message));
+      },
+      /////////////////////////////////////////////////////////////////////
       // user comment - post
       async postComment(postId) {
         if (this.comment.comText == '') {
@@ -131,9 +151,9 @@
           this.comment.postId = postId
           let comText = this.comment.comText
           let userId = localStorage.userId
-          let data = {postId, comText, userId }
+          let data = { postId, comText, userId }
 
-          axios.post('/api/post/comment/create', data,{
+          axios.post(`/api/comment/create`, data,{
             headers : {
               'Content-Type': 'application/json',
               Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -148,18 +168,55 @@
           });
         }
       },
+      //////////////////////////////////////////////////////////////////////////////////////////
+      //update user - axios put
+      async updateComment(comId){
+        const userId = localStorage.userId
+        const url = `/api/comment/update/${comId}`
+        const updateComment = { 
+          comText: this.updateCom,
+          userId: userId,
+          comId: comId
+        }
+        await axios.put(url, updateComment, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: "Bearer " + localStorage.getItem("token")
+          }
+        })
+        .then((response) => {
+          const res = response.data;
+          console.log(res);
+          window.location.assign("/home");
+        })
+        .catch((error) => {
+          alert(error.message)
+        });
+        
+      },
 
       /////////////////////////////////////////////////////////////////////
       // toggle comment input
         toggleInput() {
-        this.comment.showInput = !this.comment.showInput
+        this.showInput = !this.showInput
+        },
+      /////////////////////////////////////////////////////////////////////
+      // toggle comment input
+        toggleInputUpdate() {
+        this.showInputUpdate = !this.showInputUpdate
         },
       /////////////////////////////////////////////////////////////////////
       // reset comment input
         resetComment() {
           this.comment.comText = ''
         },
+      /////////////////////////////////////////////////////////////////////
+      // reset comment input update
+        resetCommentUpdate() {
+          this.comment.updateCom = ''
+        },
         /////////////////////////////////////////////////////////////////////
+        // get all post and comment if user press button 'All posts' on navbar
         async getPosts() {
             const url = `/post/all/`;
             await axios.get(url, {
@@ -172,6 +229,7 @@
             }).catch(error => { console.log(error) });
         },
         /////////////////////////////////////////////////////////////////////
+        // get all posts by author if user press button 'My posts' on navbar
         async myPosts() {
             const user = localStorage.userId
             const url = `/post/all/${user}`;
@@ -189,23 +247,22 @@
             this.$router.push("home/create");
         },
         /////////////////////////////////////////////////////////////////////
+        // delete post
         async deletePost(postId) {
-            const url = `/post/all/${postId}`;
-            //  TODO  : alert 'You want to delete the post?'
-            //        if true -->   DELETE REQUEST
-            await axios.delete(url, {
-                headers: { Authorization: "Bearer " + localStorage.getItem("token") }
-            }).then((response) => {
-                let res = JSON.parse(response.data);
-                console.log(res);
-                window.location.assign("/home");
-            }).catch((error) => console.log(error.message));
+          const url = `/post/all/${postId}`;
+          await axios.delete(url, {
+            headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+          }).then((response) => {
+            let res = JSON.parse(response.data);
+            console.log(res);
+            window.location.assign("/home");
+          }).catch((error) => console.log(error.message));
         },
         /////////////////////////////////////////////////////////////////////
     },
     async mounted() {
       /////////////////////////////////////////////////////////////////////
-      //get all posts from the DB --> if authorized show posts in user home page
+      //get all posts and comments from the DB
       await axios.get("/post/all", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
@@ -253,6 +310,16 @@
   max-width: 1200px;
 }
 
+.commentInputUpdate{
+  width: 95%;
+  min-height: 80px;
+  margin:auto;
+  margin-top:20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  padding:10px;
+  max-width: 1200px;
+}
 .comments {
   min-height: 80px;
   width: 50%;
