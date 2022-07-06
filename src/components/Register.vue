@@ -77,7 +77,6 @@ export default {
       lastName: "",
       email: "",
       password: "",
-      // password_confirm: ''
     };
   },
   methods: {
@@ -88,15 +87,18 @@ export default {
           lastName: this.lastName,
           email: this.email,
           password: this.password,
-          // password_confirm: this.password_confirm
         });
+      this.$router.push("login");  
       } catch (err) {
-        // console.log(err.response.data.error)
+        // alert(err.response.data.error.errors)
+        let errors = err.response.data.error.errors
+        errors.forEach((error) => {
+          alert(error.message)
+        })
         if (err.response.status == 401) {
           alert("User already exist");
         }
       }
-      this.$router.push("login");
     },
   },
 };
@@ -115,7 +117,6 @@ export default {
 }
 
 .register-box {
-  /* border: 1px solid black; */
   display: block;
   display: flex;
   justify-content: center;
