@@ -16,9 +16,11 @@ try {
     //GET
     router.get('/all', auth, postCtrl.getAllPosts)
     router.get('/all/:id', auth, postCtrl.getPostsByUser)
+    router.get('/status/isRead/:id', auth, postCtrl.getIsRead)
 
     //POST
     router.post('/newPost', auth, multer, postCtrl.createPost)
+    router.post('/isRead', auth, postCtrl.isRead)
 
     //PUT
     router.put('/updatePost/:id', auth, multer, postCtrl.updatePost)

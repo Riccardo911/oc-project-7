@@ -2,7 +2,7 @@
                 Post controllers
 ******************************************************/
 
-const { User , Post, Like, Comment, sequelize } = require('../models/index')
+const { User , Post, Comment, Status, sequelize } = require('../models/index')
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
@@ -38,8 +38,8 @@ exports.getAllPosts = async (req, res) => {
           attributes: {
           include: [ 'comText', 'postId', 'userId', [sequelize.fn("DATE_FORMAT", sequelize.col("comCreatedAt"), "%d-%m-%Y %H:%i:%s" ), 'comCreatedAt']],
           exclude: ['comUpdatedAt']},
-            include: { model: User, attributes: {exclude:['password', 'email', 'user_id']}},
-        }
+            include: { model: User, attributes: {exclude:['password', 'email', 'user_id']}}},
+        { model : Status }
       ],
       attributes: { 
         include: [ 'post_id', [sequelize.fn("DATE_FORMAT", sequelize.col("createdAt"), "%d-%m-%Y %H:%i:%s" ), 'date']],
@@ -151,6 +151,51 @@ exports.updatePost = async (req, res) => {
     })
   } else {
     res.status(401).json({ message: 'Unauthorized!' })
+  }
+
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//isRead
+
+exports.isRead = async (req, res) => {
+
+  let userId = req.body.userId
+  let postId = req.body.postId
+  let isRead = req.body.isRead
+  let insert = { postId, userId, isRead}
+
+  await Status.findOne({
+    where: { userId: userId, postId: postId }
+  }).then((response) => {
+    if (!response) {
+      Status.create(insert)
+      .then((response) => {
+        res.status(201).json(response)
+      }).catch((error) => {
+        res.status(400).json(error);
+      });
+    } else {
+      res.status(403).json({message : 'Status already exist!'});
+    }
+  })
+
+};
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//Get post read by user
+
+exports.getIsRead = async (req, res) => {
+
+  try {
+    const read = await Status.findAll({
+      where : { userId: req.params.id},
+      attributes: { exclude : ['id']}
+    });
+    return res.json(read);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json(err);
   }
 
 };

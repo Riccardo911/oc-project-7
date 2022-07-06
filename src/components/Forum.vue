@@ -8,12 +8,11 @@
         <div class="nav-user">
           <button @click="newPost">Create post</button>
           <button @click="getPosts()">All posts</button>
-          <button>Unread</button>
           <button @click="myPosts()">My posts</button>
         </div>
       </div>
     </section>
-    <section v-for="(post, index) in allPosts" :key="index">
+    <section v-for="(post, index) in allPosts" :key="index" @click="isRead(post.post_id)">
       <div class="post">
         <div class="post_user">
           <div class="profile-img-post">
@@ -23,6 +22,10 @@
             <div class="profile-name">by {{ post.User.firstName }} {{ post.User.lastName }}</div>
             <div class="profile-name">at {{ post.date }}</div>
           </div>
+        </div>
+        <!-- post read notification -->
+        <div v-for="(obj, index) in read" :key="index">
+          <div class="read" v-if="post.post_id == obj.postId && user == obj.userId">Read</div>
         </div>
         <!-- post content -->
           <!-- text -->
@@ -85,12 +88,14 @@
   import axios from 'axios';
 
   export default {
-    name: "Home-bar",
+    name: "Forum-page",
     data() {
       return {
         user: null,
         allPosts: [],
         allLikes: [],
+        read:[],
+        readEmpty: true,
         comment: {
           comText:'',
           postId:'',
@@ -108,28 +113,50 @@
     },
 
     methods: {
+      ///////////////////////////////////////////////////////////////////////
+      // isRead - change if the user click on the section of the post
+      isRead(postId){
+        const url = '/post/isRead'
+        const userId = parseInt(localStorage.userId)
+        const isRead = true
+        const data = { userId, postId, isRead }
+        this.read.push(data)
+        
+        axios.post( url, data, {
+          headers : {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+          })
+          .then(response => {
+            console.log(response);
+          })
+          .catch(error => {
+            console.log(error);
+          })
+          
+      },
       /////////////////////////////////////////////////////////////////////
       // user likes a post
-        async likes(postId) {
-          this.like.postId = postId;
-          this.like.userId = this.user;
-          if(this.like.liked == false ){
-          const url = `api/post/like/all/${postId}`;
-          await axios.post(url, {
-            userId: this.like.userId,
-          }, 
-          { headers: {
-            Authorization: "Bearer " + localStorage.getItem("token")}
-          }).then(response => {
-            console.log(response);
-            this.like.liked = true;
-            window.location.reload();
-          }).catch(error => {
-            console.log(error);
-            this.like.liked = false;
-          });
-          }
-        },
+      async likes(postId) {
+        this.like.postId = postId;
+        this.like.userId = this.user;
+        if(this.like.liked == false ){
+        const url = `api/post/like/all/${postId}`;
+        await axios.post(url, {
+          userId: this.like.userId,
+        }, 
+        { headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")}
+        }).then(response => {
+          console.log(response);
+          this.like.liked = true;
+          window.location.reload();
+        }).catch(error => {
+          console.log(error);
+          this.like.liked = false;
+        });
+        }
+      },
       /////////////////////////////////////////////////////////////////////
       // user comment - delete
       async deleteComment(comId){
@@ -290,11 +317,36 @@
         let likes = response.data;
         this.allLikes = likes;
       }).catch(error => (console.log(error)));
+
+      /////////////////////////////////////////////////////////////////////
+      // isRead
+      const userId = this.user
+      await axios.get(`post/status/isRead/${userId}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      }).then(response => {
+        let read = response.data;
+        this.read = read;
+        if (read.length > 0) {
+          this.readEmpty = false
+        } else {
+          this.readEmpty = true
+        }
+      }).catch(error => (console.log(error)));
     },
 };
 </script>
 
 <style>
+
+.read {
+  padding-left:5px;
+  font-size: large;
+  border: 2px solid green;
+  width: 100px;
+  font-style: italic;
+}
 
 .like {
   font-weight: lighter;
