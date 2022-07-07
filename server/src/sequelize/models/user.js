@@ -81,21 +81,6 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull:false,
-      validate: {
-        notEmpty: {
-          args:true,
-          msg: "Password don't allow empty strings"
-        },          
-        len: {
-          args: [8, 64],
-          msg: "The length of the password is between 8 and 64 characters"
-        },
-        // is: {
-        //   args:[/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,64}$/],
-        //   msg: "Min 1 uppercase letter. Min 1 lowercase letter. Min 1 number. Min 1 special character. Min 8 characters. Max 64 characters."
-        // }
-        //TODO custom validation with bcrypt compare
-      }
     }
   },{
     sequelize,
