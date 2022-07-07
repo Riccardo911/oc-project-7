@@ -118,9 +118,19 @@
       isRead(postId){
         const url = '/post/isRead'
         const userId = parseInt(localStorage.userId)
-        const isRead = true
+        let isRead = false
+        
+        this.read.forEach((item) => {
+          if (item.postId == postId){
+            console.log('Found') 
+            isRead = true 
+          }
+        })
+        if (isRead == false){
         const data = { userId, postId, isRead }
+
         this.read.push(data)
+        console.log(this.read)
         
         axios.post( url, data, {
           headers : {
@@ -133,7 +143,7 @@
           .catch(error => {
             console.log(error);
           })
-          
+        }
       },
       /////////////////////////////////////////////////////////////////////
       // user likes a post
@@ -328,6 +338,7 @@
       }).then(response => {
         let read = response.data;
         this.read = read;
+        console.log(read)
         if (read.length > 0) {
           this.readEmpty = false
         } else {
