@@ -23,10 +23,11 @@
             <div class="profile-name">at {{ post.date }}</div>
           </div>
         </div>
-        <!-- post read notification -->
-        <div v-for="(obj, index) in read" :key="index">
-          <div class="read" v-if="post.post_id == obj.postId && user == obj.userId">Read</div>
-        </div>
+    
+        <!-- post read/unread toggle -->
+        <div class="read" v-if="read.find(x => {if(x.userId == user && x.postId == post.post_id && x.isRead == true){ return true; } return false;})">Read</div>
+        <div class="unread" v-else>Unread</div>
+
         <!-- post content -->
           <!-- text -->
         <div class="post_content">{{ post.postText }}</div>
@@ -96,7 +97,6 @@
         allPosts: [],
         allLikes: [],
         read:[],
-        readEmpty: true,
         comment: {
           comText:'',
           postId:'',
@@ -120,15 +120,15 @@
       isRead(postId){
         const url = '/post/isRead'
         const userId = parseInt(localStorage.userId)
-        let isRead = false
+        let isAlreadyRead = false
         
         this.read.forEach((item) => {
           if (item.postId == postId){
-            console.log('Found') 
-            isRead = true 
+            isAlreadyRead = true 
           }
         })
-        if (isRead == false){
+        if (isAlreadyRead == false){
+        let isRead = true
         const data = { userId, postId, isRead }
         this.read.push(data)
 
@@ -350,7 +350,6 @@
       }).then(response => {
         let read = response.data;
         this.read = read;
-        console.log(read)
         if (read.length > 0) {
           this.readEmpty = false
         } else {
@@ -363,11 +362,21 @@
 
 <style>
 
+.unread {
+  padding-left:5px;
+  font-size: large;
+  border: 2px solid rgb(203, 7, 7);
+  color: rgb(203, 7, 7);
+  width: 65px;
+  font-style: italic;
+}
+
 .read {
   padding-left:5px;
   font-size: large;
-  border: 2px solid green;
-  width: 100px;
+  border: 2px solid grey;
+  color:grey;
+  width: 45px;
   font-style: italic;
 }
 
