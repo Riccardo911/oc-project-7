@@ -117,18 +117,15 @@ export default {
 }
 
 .register-box {
-  display: block;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 250px;
-  margin-top: 250px;
+  height: 80vh;
 }
 
 .register-form {
   border: 1px solid black;
   border-radius: 10px;
-  width: 100%;
   background-color: #333;
   color: white;
   padding: 60px;
@@ -175,6 +172,25 @@ input[type="submit"]:hover {
 
 .register_link a:hover {
   text-decoration: underline;
+}
+
+@media only screen and (max-width: 768px) {
+  .register-box {
+    display: block;
+  }
+
+  .register-form {
+    border-radius: 0;
+  }
+  
+}
+
+@media only screen and (max-width: 480px) {
+
+  .register-form {
+    padding:15px;
+  }
+  
 }
 </style>
 

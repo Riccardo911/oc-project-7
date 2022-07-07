@@ -434,7 +434,6 @@
 }
 
 .create-post-form {
-  /* display: block; */
   min-height: 80px;
   width: 80%;
   margin:auto;
@@ -533,7 +532,6 @@ button:hover{
 }
 
 .profile-name {
-  /* border: 1px solid black; */
   height: 28px;
   min-width: 170px;
   margin:auto;
@@ -546,7 +544,6 @@ button:hover{
 .post_content {
   border-radius: 10px;
   margin:auto;
-  /* border: 1px solid black; */
   min-height: 40px;
   padding:10px;
   overflow-wrap: break-word;
@@ -568,7 +565,6 @@ button:hover{
   justify-content: center;
   border-radius: 10px;
   margin:auto;
-  /* border: 1px solid black; */
   min-height: 30px;
   padding:10px
 }
@@ -585,7 +581,6 @@ button:hover {
 
 #delete-button:hover{
   background: rgb(232, 3, 3);
-  /* color:black; */
   border-color: #333;
   transition: 0.4s;
   font-weight:bold;
@@ -614,25 +609,35 @@ button:hover {
 }
 
 @media only screen and (max-width: 487px) {
-  .post_buttons {
-    text-align: inherit;
+  
+  .nav-user {
+    width: 100%;
+    display:flex;
+    margin:0;
+  }
+  .profile-img {
+    display:none;
+  }
+  .create-post-form {
+    width: 95%;
+    min-height: 60px;
+    justify-content: center;
+  }
+  .post{
+    width: 85%;
+  }
+  .commentInput{
+    width: 67%;
+  }
+  .comments{
+    width: 65%;
   }
 }
 
-@media only screen and (max-width: 370px) {
-  .post_buttons {
-    text-align: inherit;
-  }
-
-  button {
-    width:120px;
-  }
-}
-
-@media only screen and (max-width: 339px) {
-  .post_buttons {
-    text-align: center;
-  }
+@media only screen and (max-width: 380px) {
+ .sticky{
+  top:55px;
+ }
 }
    
 </style>

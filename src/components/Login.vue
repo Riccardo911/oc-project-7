@@ -79,22 +79,18 @@ export default {
 
 <style>
 .login-box {
-  /* border: 1px solid black; */
-  /* display: block; */
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 250px;
-  margin-top: 250px;
+  height: 80vh;
 }
 
 .login-form {
   border: 1px solid black;
   border-radius: 10px;
-  width: 100%;
   background-color: #333;
   color: white;
-  padding: 60px;
+  padding: 55px;
   box-shadow: 0px 2px 8px rgb(0, 0, 0, 1);
 }
 
@@ -137,5 +133,25 @@ input[type="submit"]:hover {
 
 .register_link a:hover {
   text-decoration: underline;
+}
+
+@media only screen and (max-width: 768px) {
+  .login-box {
+    display: block;
+  }
+
+  .login-form {
+    border-radius: 0;
+
+  }
+  
+}
+
+@media only screen and (max-width: 480px) {
+
+  .login-form {
+    padding:15px;
+  }
+  
 }
 </style>

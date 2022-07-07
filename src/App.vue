@@ -37,7 +37,6 @@ export default {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: x-large;
-  font-weight: 500;
 }
 
 body {
@@ -53,4 +52,14 @@ header {
 section {
   margin-top:30px;
 }
+
+@media only screen and (max-width: 380px) {
+ header {
+  margin-bottom: 0;
+ }
+ section {
+  margin-top:20px;
+ }
+}
+
 </style>

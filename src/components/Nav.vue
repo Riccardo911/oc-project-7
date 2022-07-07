@@ -25,7 +25,6 @@
     methods: {
       logout() {
         localStorage.clear()
-        // this.$router.push('/', () => {})
         window.location.assign('/');
       },
     },
@@ -85,6 +84,15 @@ ul {
 li {
   border-right: 1px solid #bbb;
   border-left: 1px solid #bbb;
+}
+
+@media only screen and (max-width: 380px) {
+ .logo img{
+  width: 105px;
+ }
+  li a {
+    padding:10px 10px;
+  }
 }
 
 </style>
