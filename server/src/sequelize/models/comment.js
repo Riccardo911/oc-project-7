@@ -23,8 +23,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:false
     },
     comText: {
-        type: DataTypes.TEXT,
-        allowNull:false
+      type: DataTypes.TEXT,
+      allowNull:false
     },
   },{
     sequelize,
@@ -33,7 +33,6 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: true,
     createdAt: 'comCreatedAt',
     updatedAt: 'comUpdatedAt'
-    // alter: true
   });
   return Comment;
 };

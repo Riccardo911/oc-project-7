@@ -9,6 +9,7 @@
   </section>
 </template>
 
+
 <script>
 export default {
 name:"Home-page"
@@ -32,5 +33,11 @@ display: flex;
 justify-content: center;
 text-align: center;
 padding: 15px;
+}
+
+@media only screen and (max-width: 480px) {
+  .logo img{
+    width: 90%;
+  }
 }
 </style>

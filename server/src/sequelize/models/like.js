@@ -28,7 +28,6 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'likes',
     modelName: 'Like',
     timestamps: false,
-    // alter: true
   });
   return Like;
 };

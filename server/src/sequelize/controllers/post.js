@@ -38,8 +38,8 @@ exports.getAllPosts = async (req, res) => {
           attributes: {
           include: [ 'comText', 'postId', 'userId', [sequelize.fn("DATE_FORMAT", sequelize.col("comCreatedAt"), "%d-%m-%Y %H:%i:%s" ), 'comCreatedAt']],
           exclude: ['comUpdatedAt']},
-            include: { model: User, attributes: {exclude:['password', 'email', 'user_id']}}},
-        { model : Status }
+            include: { model: User, attributes: {exclude:['password', 'email', 'user_id']}}
+        },
       ],
       attributes: { 
         include: [ 'post_id', [sequelize.fn("DATE_FORMAT", sequelize.col("createdAt"), "%d-%m-%Y %H:%i:%s" ), 'date']],

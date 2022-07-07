@@ -5,7 +5,6 @@
 const { User } = require('../models/index')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
-const { token } = require('morgan');
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //register
@@ -46,13 +45,11 @@ exports.login = async (req, res, next) => {
         };
         bcrypt.compare(req.body.password, user.password).then((valid) => {
             if (!valid) {
-                return res.status(401).json({ error: 'Incorrect password!'});
+              return res.status(401).json({ error: 'Incorrect password!'});
             };
             res.status(200).json({
-                userID: user.user_id,
-                // firstName : user.firstName,
-                // lastName : user.lastName,
-                token: jwt.sign({userID: user.user_id }, 'secret_token_dev', {expiresIn: '24h'})
+              userID: user.user_id,
+              token: jwt.sign({ userID: user.user_id }, 'secret_token_dev', {expiresIn: '24h'})
             })
         }).catch(error => res.status(400).json(error));
     }).catch(error => res.status(500).json({error}));
