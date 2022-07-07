@@ -241,7 +241,7 @@ export default {
 @media only screen and (max-width: 768px) {
   .profile {
     width:75%;
-    margin-top:120px;
+    margin-top:-20px;
   }
 }
 </style>
