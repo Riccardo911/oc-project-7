@@ -38,7 +38,7 @@
         </div>
         <!-- post buttons -->
         <div class="post_buttons">
-          <button @click="toggleInput()">Comment</button>
+          <button @click="toggleInput(post.post_id)">Comment</button>
             <button @click="likes(post.post_id)">Like</button>
           <button v-if="post.userId == user" @click="newPostUpdate(post.post_id)" >
             Update</button>
@@ -47,11 +47,12 @@
         </div> 
       </div>
       <!-- comment input -->
-        <div class="commentInput" v-if="showInput == true">
+        <div class="commentInput" v-if="showInput == post.post_id">
           <textarea placeholder="Write some text..." v-model="comment.comText"></textarea>
           <button @click="postComment(post.post_id)">Post</button>
           <button @click="resetComment()">Reset</button>
-        </div>
+        </div>  
+      <!-- </div> -->
       <!-- comments -->
       <div class="comments" v-for="(comment, index) in post.Comments" :key="index">
           <div class="post_user">
@@ -66,16 +67,16 @@
           
           <div class="comment-content">{{ comment.comText }}</div>
           <div class="post_buttons">
-            <button v-if="comment.userId == user" @click="toggleInputUpdate()">
+            <button v-if="comment.userId == user" @click="toggleInputUpdate(comment.id, post.post_id)">
               Update</button>
             <button v-if="comment.userId == user" id="delete-button" @click="deleteComment(comment.id)">
               Delete</button>
           </div>
           <!-- comment input update-->
-          <div class="commentInputUpdate" v-if="showInputUpdate == true">
+          <div class="commentInputUpdate" v-if="showInputUpdate_comId == comment.id && showInputUpdate_postId == post.post_id">
             <textarea placeholder="Write some text..." v-model="updateCom"></textarea>
             <button @click="updateComment(comment.id)">Update</button>
-            <button @click="resetCommentUpdate()">Reset</button>
+            <button @click="resetCommentUpdate(comment.id)">Reset</button>
           </div>
       </div>
 
@@ -102,8 +103,9 @@
           userId:'',
         },
         updateCom:'',
-        showInput: false,
-        showInputUpdate: false,
+        showInput: '',
+        showInputUpdate_comId:'',
+        showInputUpdate_postId:'',
         like:{
           postId:'',
           userId:'',
@@ -128,10 +130,8 @@
         })
         if (isRead == false){
         const data = { userId, postId, isRead }
-
         this.read.push(data)
-        console.log(this.read)
-        
+
         axios.post( url, data, {
           headers : {
             Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -234,13 +234,25 @@
 
       /////////////////////////////////////////////////////////////////////
       // toggle comment input
-        toggleInput() {
-        this.showInput = !this.showInput
+        toggleInput(postId) {
+          if (this.showInput != postId){
+            this.showInput = postId
+          } else {
+            this.showInput = ''
+          }
         },
       /////////////////////////////////////////////////////////////////////
-      // toggle comment input
-        toggleInputUpdate() {
-        this.showInputUpdate = !this.showInputUpdate
+      // toggle comment update input 
+        toggleInputUpdate(comId, postId) {
+        // this.showInputUpdate = !this.showInputUpdate
+        console.log(comId, postId)
+        if (this.showInputUpdate_comId != comId || this.showInputUpdate_postId != postId ){
+          this.showInputUpdate_comId = comId
+          this.showInputUpdate_postId = postId
+        } else {
+          this.showInputUpdate_comId = ''
+          this.showInputUpdate_postId = ''
+        }
         },
       /////////////////////////////////////////////////////////////////////
       // reset comment input
@@ -250,7 +262,7 @@
       /////////////////////////////////////////////////////////////////////
       // reset comment input update
         resetCommentUpdate() {
-          this.comment.updateCom = ''
+          this.updateCom = ''
         },
         /////////////////////////////////////////////////////////////////////
         // get all post and comment if user press button 'All posts' on navbar
