@@ -6,25 +6,19 @@
     <main>
       <router-view />
     </main>
-    <Footer />
   </div>
+  
 </template>
 
 <script>
 // import component
 import Nav from "@/components/Nav.vue";
-// import Home from '@/components/Home.vue';
-// import Login from '@/components/Login.vue';
-// import Footer from "@/components/Footer.vue";
 
 // declaration
 export default {
   name: "App",
   components: {
     Nav,
-    // Home,
-    // Login,
-    // Footer,
   },
   
 };
